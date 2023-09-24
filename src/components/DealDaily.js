@@ -1,7 +1,7 @@
-import React, { useState, useEffect, memo } from "react";
+import React, { useState, useEffect } from "react";
 import icons from "../ultils/icons";
 import { apiGetProducts } from "../apis/product";
-// import { renderStarFromNumber, formatMoney } from "../ultils/helpers";
+import { renderStarFromNumber, formatMoney } from "../ultils/helpers";
 const { AiFillStar } = icons;
 
 const DealDaily = () => {
@@ -10,8 +10,8 @@ const DealDaily = () => {
   const fetchDealDaily = async () => {
     const response = await apiGetProducts({
       limit: 1,
-      page: 5,
-      //   totalRatings: 5,
+      page: 1,
+      totalRatings: 4,
     });
     if (response.success) setDealDaily(response.productDatas[0]);
   };
@@ -19,7 +19,7 @@ const DealDaily = () => {
   useEffect(() => {
     fetchDealDaily();
   }, []);
-  //   console.log(dealDaily);
+  // console.log(dealDaily);
   return (
     <div className=" border w-full flex-auto">
       <div className="flex justify-between items-center p-4 w-full">
@@ -40,14 +40,17 @@ const DealDaily = () => {
           alt=""
           className=" w-full  object-contain"
         ></img>
-        {/* <span className="flex h-4">
+        <span className="flex h-4">
           {renderStarFromNumber(dealDaily?.totalRatings)}
         </span>
         <span className=" line-clamp-1">{dealDaily?.title}</span>
-        <span>{`${formatMoney(dealDaily?.price)} VND`}</span> */}
+        <span>{`${
+          dealDaily?.price && formatMoney(dealDaily?.price)
+        } VND`}</span>
       </div>
     </div>
   );
+  ///new
 };
 
-export default memo(DealDaily);
+export default DealDaily;
