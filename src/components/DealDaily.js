@@ -2,23 +2,61 @@ import React, { useState, useEffect } from "react";
 import icons from "../ultils/icons";
 import { apiGetProducts } from "../apis/product";
 import { renderStarFromNumber, formatMoney } from "../ultils/helpers";
-const { AiFillStar } = icons;
-
+import { Countdown } from "./";
+const { AiFillStar, BiMenu } = icons;
+let idInterval;
 const DealDaily = () => {
   const [dealDaily, setDealDaily] = useState(null);
+  const [hours, setHours] = useState(0);
+  const [minutes, setMinutes] = useState(0);
+  const [seconds, setSeconds] = useState(0);
+  const [expireTime, setExpireTime] = useState(false);
 
   const fetchDealDaily = async () => {
     const response = await apiGetProducts({
       limit: 1,
-      page: 1,
+      page: Math.round(Math.random() * 10),
       totalRatings: 4,
     });
-    if (response.success) setDealDaily(response.productDatas[0]);
+    if (response.success) {
+      setDealDaily(response.productDatas[0]);
+      setHours(24);
+      setMinutes(59);
+      setSeconds(59);
+    }
   };
 
+  // useEffect(() => {
+  //   fetchDealDaily();
+  // }, []);
   useEffect(() => {
+    idInterval && clearInterval(idInterval);
     fetchDealDaily();
-  }, []);
+  }, [expireTime]);
+  useEffect(() => {
+    idInterval = setInterval(() => {
+      console.log("interval");
+      if (seconds > 0) setSeconds((prev) => prev - 1);
+      else {
+        if (minutes > 0) {
+          setMinutes((prev) => prev - 1);
+          setSeconds(59);
+        } else {
+          if (hours > 0) {
+            setHours((prev) => prev - 1);
+            setMinutes(59);
+            setSeconds(59);
+          } else {
+            setExpireTime(!expireTime);
+          }
+        }
+      }
+    }, 1000);
+    return () => {
+      clearInterval(idInterval);
+    };
+  }, [seconds, minutes, hours, expireTime]);
+
   // console.log(dealDaily);
   return (
     <div className=" border w-full flex-auto">
@@ -31,7 +69,7 @@ const DealDaily = () => {
         </span>
         <span className=" flex-1"></span>
       </div>
-      <div className=" w-full flex flex-col items-center pt-8 gap-2">
+      <div className=" w-full flex flex-col items-center pt-8 gap-2 px-4">
         <img
           src={
             dealDaily?.thumb ||
@@ -41,12 +79,26 @@ const DealDaily = () => {
           className=" w-full  object-contain"
         ></img>
         <span className="flex h-4">
-          {renderStarFromNumber(dealDaily?.totalRatings)}
+          {renderStarFromNumber(dealDaily?.totalRatings, 20)}
         </span>
-        <span className=" line-clamp-1">{dealDaily?.title}</span>
+        <span className=" line-clamp-1 text-center ">{dealDaily?.title}</span>
         <span>{`${
           dealDaily?.price && formatMoney(dealDaily?.price)
         } VND`}</span>
+      </div>
+      <div className="px-4 mt-8">
+        <div className="mb-4 flex justify-center items-center gap-2">
+          <Countdown unit={"Hours"} number={hours}></Countdown>
+          <Countdown unit={"Minutes"} number={minutes}></Countdown>
+          <Countdown unit={"Seconds"} number={seconds}></Countdown>
+        </div>
+        <button
+          type="button"
+          className="py-2 flex gap-2 items-center justify-center w-full bg-main hover:bg-gray-800 text-white font-medium"
+        >
+          <BiMenu></BiMenu>
+          <span>Options</span>
+        </button>
       </div>
     </div>
   );
