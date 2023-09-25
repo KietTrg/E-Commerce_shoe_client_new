@@ -5,7 +5,7 @@ import { apiGetProducts } from "../apis";
 const FeatureProduct = () => {
   const [products, setProducts] = useState(null);
   const fetchProducts = async () => {
-    const response = await apiGetProducts({ limit: 9, totalRatings: 3 });
+    const response = await apiGetProducts({ limit: 9, totalRatings: 5 });
     console.log(response);
     if (response.success) setProducts(response.productDatas);
   };
@@ -20,7 +20,7 @@ const FeatureProduct = () => {
       <div className=" flex flex-wrap mt-[15px] mx-[-10px]">
         {products?.map((el) => (
           <ProductCard
-            key={el.id}
+            key={el._id}
             image={el.thumb}
             title={el.title}
             totalRatings={el.totalRatings}

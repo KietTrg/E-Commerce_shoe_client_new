@@ -15,8 +15,8 @@ const DealDaily = () => {
   const fetchDealDaily = async () => {
     const response = await apiGetProducts({
       limit: 1,
-      page: Math.round(Math.random() * 10),
-      totalRatings: 4,
+      page: Math.round(Math.random() * 2),
+      totalRatings: 5,
     });
     if (response.success) {
       setDealDaily(response.productDatas[0]);
@@ -85,7 +85,11 @@ const DealDaily = () => {
           className=" w-full  object-contain"
         ></img>
         <span className="flex h-4">
-          {renderStarFromNumber(dealDaily?.totalRatings, 20)}
+          {renderStarFromNumber(dealDaily?.totalRatings, 20)?.map(
+            (el, index) => (
+              <span key={index}>{el}</span>
+            )
+          )}
         </span>
         <span className=" line-clamp-1 text-center ">{dealDaily?.title}</span>
         <span>{`${

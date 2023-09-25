@@ -1,40 +1,35 @@
 import React, { useEffect, useState } from "react";
 import { apiGetProducts } from "../apis/product";
-import Product from "./Product";
-import Slider from "react-slick";
+import { Product, CustomSlider } from "./";
+import { getNewProducts } from "../store/products/asyncActions";
+import { useDispatch, useSelector } from "react-redux";
 const tabs = [
   { id: 1, name: "best sellers" },
   { id: 2, name: "new arrivals" },
 ];
-const settings = {
-  dots: false, //dau cham
-  infinite: false,
-  speed: 500,
-  slidesToShow: 3, //trong 1 lan show
-  slidesToScroll: 1,
-};
+
 const BestSeller = () => {
   const [bestSeller, setBestSeller] = useState(null);
-  const [newProducts, setNewProducts] = useState(null);
+  const [newProductss, setNewProducts] = useState(null);
   const [activedTab, setActivedTab] = useState(1);
   const [products, setProducts] = useState(null);
+
+  const dispatch = useDispatch();
+  const { newProducts } = useSelector((state) => state.products);
+  console.log(newProducts);
   const fetchProducts = async () => {
-    const response = await Promise.all([
-      apiGetProducts({ sort: "-sold" }),
-      apiGetProducts({ sort: "-createdAt" }),
-    ]);
+    const response = await apiGetProducts({ sort: "-sold" });
 
-    if (response[0]?.success) {
-      setBestSeller(response[0].productDatas);
-      setProducts(response[0].products);
+    if (response.success) {
+      setBestSeller(response.productDatas);
+      setProducts(response.products);
     }
-    if (response[1]?.success) setNewProducts(response[1].productDatas);
-    setProducts(response[0].productDatas);
-
-    // console.log({ bestSeller, newProducts });
+    if (response.success) setNewProducts(response.productDatas);
+    setProducts(response.productDatas);
   };
   useEffect(() => {
     fetchProducts();
+    dispatch(getNewProducts());
   }, []);
   useEffect(() => {
     if (activedTab === 1) setProducts(bestSeller);
@@ -42,7 +37,7 @@ const BestSeller = () => {
   }, [activedTab]);
   return (
     <div>
-      <div className=" flex text-[20px] pb-4 border-b-2 border-main">
+      <div className=" flex text-[20px] ml-[-32px]">
         {tabs.map((el) => (
           <span
             key={el.id}
@@ -55,25 +50,16 @@ const BestSeller = () => {
           </span>
         ))}
       </div>
-      <div className="mt-4 mx-[-10px]">
-        <Slider {...settings}>
-          {products?.map((el) => (
-            <Product
-              key={el.id}
-              pid={el.id}
-              productDatas={el}
-              isNew={activedTab === 1 ? false : true}
-            ></Product>
-          ))}
-        </Slider>
+      <div className="mt-4 mx-[-10px] border-t-2 border-main pt-4">
+        <CustomSlider products={products} activedTab={activedTab} />
       </div>
       <div className="w-full flex gap-4 mt-4">
         <img
-          src="https://digital-world-2.myshopify.com/cdn/shop/files/banner1-home2_2000x_crop_center.png?v=1613166657"
+          src="https://lh3.google.com/u/0/d/16PuMmkukQms9L4Bs5nYXETwmzbnoByor=w1920-h883-iv1"
           className=" flex-1 object-contain"
         ></img>
         <img
-          src="https://digital-world-2.myshopify.com/cdn/shop/files/banner1-home2_2000x_crop_center.png?v=1613166657"
+          src="https://lh3.google.com/u/0/d/1_08_s3odPhHFQPqB2ucr1vk1mXzz8nNC=w1173-h883-iv1"
           className=" flex-1 object-contain"
         ></img>
       </div>

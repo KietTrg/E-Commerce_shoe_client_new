@@ -7,6 +7,7 @@ import {
   AiFillEye,
 } from "react-icons/ai";
 import { BiSolidShoppingBagAlt, BiSolidUser, BiMenu } from "react-icons/bi";
+import { IoIosArrowForward } from "react-icons/io";
 const icons = {
   BsTelephoneFill,
   MdEmail,
@@ -18,5 +19,6 @@ const icons = {
   AiFillEye,
   BiMenu,
   BsSuitHeartFill,
+  IoIosArrowForward,
 };
 export default icons;
