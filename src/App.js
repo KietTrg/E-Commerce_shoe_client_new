@@ -9,6 +9,8 @@ import {
   Blogs,
   DetailProduct,
   Products,
+  FinalRegister,
+  ResetPassword,
 } from "./pages/public";
 import path from "./ultils/path";
 import { getCategories } from "./store/app/asyncActions";
@@ -23,7 +25,6 @@ function App() {
       <Routes>
         <Route path={path.PUBLIC} element={<Public />}>
           <Route path={path.HOME} element={<Home />}></Route>
-
           <Route path={path.BLOGS} element={<Blogs />}></Route>
           <Route path={path.OUR_SERVICES} element={<Services />}></Route>
           <Route
@@ -32,7 +33,9 @@ function App() {
           ></Route>
           <Route path={path.FAQ} element={<FAQ />}></Route>
           <Route path={path.PRODUCTS} element={<Products />}></Route>
+          <Route path={path.RESET_PASSWORD} element={<ResetPassword />}></Route>
         </Route>
+        <Route path={path.FINAL_REGISTER} element={<FinalRegister />}></Route>
         <Route path={path.LOGIN} element={<Login />}></Route>
       </Routes>
     </div>
