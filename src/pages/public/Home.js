@@ -15,8 +15,8 @@ const Home = () => {
   const { categories } = useSelector((state) => state.app);
   console.log(categories);
   return (
-    <div>
-      <div className="w-main flex">
+    <>
+      <div className="w-main flex mt-6">
         <div className=" flex flex-col gap-5 w-[25%] flex-auto ">
           <Sidebar></Sidebar>
           <DealDaily></DealDaily>
@@ -73,7 +73,7 @@ const Home = () => {
           BLOG POSTS
         </h3>
       </div>
-    </div>
+    </>
   );
 };
 
