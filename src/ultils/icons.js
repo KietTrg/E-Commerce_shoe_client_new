@@ -1,16 +1,23 @@
-import { BsTelephoneFill, BsSuitHeartFill } from "react-icons/bs";
-import { MdEmail } from "react-icons/md";
+import {
+  BsTelephoneFill,
+  BsSuitHeartFill,
+  BsShieldShaded,
+  BsFillReplyFill,
+} from "react-icons/bs";
+import { MdEmail, MdTty } from "react-icons/md";
 import {
   AiFillHome,
   AiFillStar,
   AiOutlineStar,
   AiFillEye,
+  AiFillGift,
 } from "react-icons/ai";
 import {
   BiSolidShoppingBagAlt,
   BiSolidUser,
   BiMenu,
   BiLogOut,
+  BiSolidTruck,
 } from "react-icons/bi";
 import { IoIosArrowForward } from "react-icons/io";
 const icons = {
@@ -26,5 +33,10 @@ const icons = {
   BsSuitHeartFill,
   IoIosArrowForward,
   BiLogOut,
+  BsShieldShaded,
+  BiSolidTruck,
+  AiFillGift,
+  BsFillReplyFill,
+  MdTty,
 };
 export default icons;

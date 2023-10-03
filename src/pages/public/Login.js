@@ -131,13 +131,18 @@ const Login = () => {
             ></input>
             <div className="flex items-center justify-end w-full">
               <Button
+                className=" mr-2"
                 name="Submit"
                 handleOnClick={handleForgotPassword}
-              ></Button>
+              >
+                Submit
+              </Button>
               <Button
                 name="Back"
                 handleOnClick={() => setIsForgotPassword(false)}
-              ></Button>
+              >
+                Back
+              </Button>
             </div>
           </div>
         </div>
@@ -194,11 +199,10 @@ const Login = () => {
             invalidFields={invalidFields}
             setInvalidFields={setInvalidFields}
           />
-          <Button
-            name={isRegiter ? "Regiter" : "Login"}
-            handleOnClick={handleSubmit}
-            fw
-          />
+          {/* <Button name={isRegiter ? "Regiter" : "Login"} /> */}
+          <Button handleOnClick={handleSubmit} fw>
+            {isRegiter ? "Regiter" : "Login"}
+          </Button>
           <div className=" flex items-center justify-between my-2 w-full text-sm">
             {!isRegiter && (
               <span

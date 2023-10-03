@@ -3,6 +3,11 @@ module.exports = {
   content: ["./src/**/*.{html,js}", "./public/index.html"],
   theme: {
     //custom
+    listStyleType: {
+      square: "square",
+      roman: "upper-roman",
+    },
+
     fontFamily: {
       main: ["Poppins", "sans-serif"],
     },
@@ -52,6 +57,9 @@ module.exports = {
         "slide-top":
           "slide-top 0.5s cubic-bezier(0.250, 0.460, 0.450, 0.940) both;",
         "slide-top-sm": "slide-top-sm 0.2s linear both;",
+      },
+      boxShadow: {
+        custom: "rgba(0, 0, 0, 0.35) 0px 5px 15px;",
       },
     },
   },

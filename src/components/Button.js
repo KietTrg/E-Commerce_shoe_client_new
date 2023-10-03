@@ -1,6 +1,6 @@
 import React from "react";
 
-const Button = ({ name, handleOnClick, style, iconBefore, iconAfter, fw }) => {
+const Button = ({ children, handleOnClick, style, fw }) => {
   return (
     <button
       type="button"
@@ -15,9 +15,7 @@ const Button = ({ name, handleOnClick, style, iconBefore, iconAfter, fw }) => {
         handleOnClick && handleOnClick();
       }}
     >
-      {iconBefore}
-      <span>{name}</span>
-      {iconAfter}
+      {children}
     </button>
   );
 };
