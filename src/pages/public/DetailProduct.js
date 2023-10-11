@@ -66,7 +66,7 @@ const DetailProduct = ({ normal }) => {
     <div className="w-full">
       <div className="h-[81px] flex justify-center items-center bg-gray-100">
         <div className="w-main">
-          <h3 className="font-semibold">{title}</h3>
+          <h3 className="font-semibold mb-2">{title}</h3>
           <Breadcrumb title={title} category={category}></Breadcrumb>
         </div>
       </div>
@@ -134,7 +134,7 @@ const DetailProduct = ({ normal }) => {
             <Button fw>Add to cart</Button>
           </div>
         </div>
-        <div className="w-1/5">
+        <div className="w-1/5 ">
           {ProductExtraInfomation.map((el) => (
             <ProductExtraInfoItem
               key={el.id}

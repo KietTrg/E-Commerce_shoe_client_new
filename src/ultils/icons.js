@@ -11,6 +11,7 @@ import {
   AiOutlineStar,
   AiFillEye,
   AiFillGift,
+  AiOutlineDown,
 } from "react-icons/ai";
 import {
   BiSolidShoppingBagAlt,
@@ -38,5 +39,6 @@ const icons = {
   AiFillGift,
   BsFillReplyFill,
   MdTty,
+  AiOutlineDown,
 };
 export default icons;

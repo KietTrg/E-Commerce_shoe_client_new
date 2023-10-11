@@ -26,12 +26,12 @@ function App() {
         <Route path={path.PUBLIC} element={<Public />}>
           <Route path={path.HOME} element={<Home />}></Route>
           <Route path={path.BLOGS} element={<Blogs />}></Route>
-          <Route path={path.OUR_SERVICES} element={<Services />}></Route>
           <Route
             path={path.DETAIL_PRODUCT__CATEGORY__PID__TITLE}
             element={<DetailProduct />}
           ></Route>
           <Route path={path.FAQ} element={<FAQ />}></Route>
+          <Route path={path.OUR_SERVICES} element={<Services />}></Route>
           <Route path={path.PRODUCTS} element={<Products />}></Route>
           <Route path={path.RESET_PASSWORD} element={<ResetPassword />}></Route>
         </Route>

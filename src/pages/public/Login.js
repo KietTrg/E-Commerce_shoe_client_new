@@ -39,7 +39,10 @@ const Login = () => {
   const [email, setEmail] = useState("");
   const handleForgotPassword = async () => {
     const response = await apiForgotPassword({ email });
-    console.log(response);
+    // console.log(response);
+    if (response.success) {
+      Swal.fire("Congratulation, please check email", response.mes, "success");
+    } else Swal.fire("Opps!", response.mes, "error");
   };
 
   useEffect(() => {

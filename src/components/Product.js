@@ -27,7 +27,7 @@ const Product = ({ productDatas, isNew, normal }) => {
           setIsShowOption(false);
         }}
       >
-        <div className="w-full relative">
+        <div className="w-full flex items-center justify-center relative">
           {isShowOption && (
             <div className=" absolute bottom-[-10px] flex justify-center left-0 right-0 gap-2 animate-slide-top ">
               <SelectOption icons={<AiFillEye />} />

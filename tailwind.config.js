@@ -59,9 +59,9 @@ module.exports = {
         "slide-top-sm": "slide-top-sm 0.2s linear both;",
       },
       boxShadow: {
-        custom: "rgba(0, 0, 0, 0.35) 0px 5px 15px;",
+        custom: "rgba(0, 0, 0, 0.2) 0px 0px 20px;",
       },
     },
   },
-  plugins: ["@tailwindcss/line-clamp"],
+  plugins: [require("@tailwindcss/line-clamp"), require("@tailwindcss/forms")],
 };

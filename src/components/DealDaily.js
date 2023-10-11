@@ -65,7 +65,7 @@ const DealDaily = () => {
 
   // console.log(dealDaily);
   return (
-    <div className=" border w-full flex-auto">
+    <div className=" rounded-xl border w-full flex-auto">
       <div className="flex justify-between items-center p-4 w-full">
         <span className=" flex-1 flex justify-center">
           <AiFillStar size={20} color="#005f90" />
