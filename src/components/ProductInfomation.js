@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from "react";
 import { productInfoTabs } from "../ultils/contants";
-import { Votebar, Button, VoteOption } from "./";
+import { Votebar, Button, VoteOption, Comment } from "./";
 import { renderStarFromNumber } from "../ultils/helpers";
 import { apiRatings } from "../apis";
 import { useDispatch, useSelector } from "react-redux";
@@ -29,10 +29,11 @@ const ProductInfomation = ({
   // });
   const handleSubmitVoteOption = async ({ comment, score }) => {
     if (!comment || !pid || !score) {
-      alert("Please vote when click submit");
+      Swal.fire("Missing Input", "Please vote when click submit", "error");
+      // alert("Please vote when click submit");
       return;
     }
-    await apiRatings({ star: score, comment, pid });
+    await apiRatings({ star: score, comment, pid, updatedAt: Date.now() });
     dispatch(showModal({ isShowModal: false, modalChildren: null }));
     rerender();
   };
@@ -63,7 +64,7 @@ const ProductInfomation = ({
   };
   return (
     <div>
-      <div className="flex  items-center gap-2 relative bottom-[0px]">
+      <div className="flex  items-center gap-2 relative bottom-[-1px]">
         {productInfoTabs.map((el) => (
           <span
             className={`p-2 px-4 cursor-pointer   ${
@@ -77,53 +78,67 @@ const ProductInfomation = ({
             {el.name}
           </span>
         ))}
-        <div
-          className={`p-2 px-4 cursor-pointer   ${
-            activedTab === 5
-              ? "bg-white p-2 shadow-custom rounded-t-lg border-main  border-b-2 "
-              : "bg-gray-200 "
-          } `}
-          onClick={() => setActivedTab(5)}
-        >
-          CUSTOMER REVIEW
-        </div>
       </div>
-      <div className="w-full shadow-custom rounded-b-lg   p-4 ">
+      <div className="w-full border border-main rounded-b-lg   p-4 ">
         {productInfoTabs.some((el) => el.id === activedTab) &&
           productInfoTabs.find((el) => el.id === activedTab)?.content}
-        {activedTab === 5 && (
-          <div className="flex flex-col p-4">
-            <div className=" flex">
-              <div className="flex-4 flex flex-col gap-2 items-center justify-center border-r-2 border-main">
-                <span className=" font-semibold text-3xl">{`${totalRatings}/5`}</span>
-                <span className="flex items-center gap-1">
-                  {renderStarFromNumber(totalRatings)?.map((el, index) => (
-                    <span key={index}>{el}</span>
-                  ))}
-                </span>
-                <span className="text-sm">{`${ratings?.length} reviewer and commentors`}</span>
-              </div>
-              <div className="flex-6 gap-2 flex flex-col p-4">
-                {Array.from(Array(5).keys())
-                  .reverse()
-                  .map((el) => (
-                    <Votebar
-                      key={el}
-                      number={el + 1}
-                      ratingTotal={ratings?.length}
-                      ratingCount={
-                        ratings?.filter((i) => i.star === el + 1)?.length
-                      }
-                    ></Votebar>
-                  ))}
-              </div>
-            </div>
-            <div className=" flex p-4 items-center justify-center flex-col gap-2 text-sm">
-              <span>Do you review this product?</span>
-              <Button handleOnClick={handleVoteNow}>Vote Now</Button>
-            </div>
+      </div>
+
+      <div className="flex flex-col py-8">
+        <span className="bg-white border-main border-b-2 font-semibold ">
+          CUSTOMER REVIEW
+        </span>
+        <div className="flex py-8">
+          <div className="flex-4 flex flex-col gap-2 items-center justify-center border-r-2 border-main">
+            <span className=" font-semibold text-3xl">{`${totalRatings}/5`}</span>
+            <span className="flex items-center gap-1">
+              {renderStarFromNumber(totalRatings)?.map((el, index) => (
+                <span key={index}>{el}</span>
+              ))}
+            </span>
+            <span className="text-sm">{`${ratings?.length} reviewer and commentors`}</span>
           </div>
-        )}
+          <div className="flex-6 gap-2 flex flex-col p-4">
+            {Array.from(Array(5).keys())
+              .reverse()
+              .map((el) => (
+                <Votebar
+                  key={el}
+                  number={el + 1}
+                  ratingTotal={ratings?.length}
+                  ratingCount={
+                    ratings?.filter((i) => i.star === el + 1)?.length
+                  }
+                ></Votebar>
+              ))}
+          </div>
+        </div>
+
+        <div className=" flex py-4 items-center justify-center  gap-2 text-sm">
+          <span className="flex-3  text-lg font-medium">
+            Do you review this product ?
+          </span>
+
+          <Button
+            style={`flex-7 transition ease-in-out delay-150 hover:-translate-y-1 hover:scale-100  duration-300 hover:bg-[#014e75] px-4 py-2 rounded-md text-white text-semibold bg-main my-2`}
+            fw
+            handleOnClick={handleVoteNow}
+          >
+            Rate Now
+          </Button>
+        </div>
+
+        <div className="flex flex-col gap-4">
+          {ratings?.map((el) => (
+            <Comment
+              key={el._id}
+              star={el.star}
+              updatedAt={el.updatedAt}
+              comment={el.comment}
+              name={`${el.postedBy?.lastname} ${el.postedBy?.firstname}`}
+            ></Comment>
+          ))}
+        </div>
       </div>
     </div>
   );
