@@ -1,5 +1,6 @@
 import path from "./path";
 import icons from "./icons";
+import { VoteOption } from "../components";
 export const navigation = [
   {
     id: 1,
@@ -82,10 +83,6 @@ export const productInfoTabs = [
     name: "PAYMENT",
     content: `Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.`,
   },
-  {
-    id: 5,
-    name: "CUSTOMER REVIEW",
-  },
 ];
 export const colors = [
   "black",
@@ -97,4 +94,64 @@ export const colors = [
   "green",
   "blue",
   "CAM",
+];
+export const sorts = [
+  {
+    id: 1,
+    value: "-sold",
+    text: "Best selling",
+  },
+  {
+    id: 2,
+    value: "title",
+    text: "A-Z",
+  },
+  {
+    id: 3,
+    value: "-title",
+    text: "Z-A",
+  },
+  {
+    id: 4,
+    value: "-price",
+    text: "Price, hight - low",
+  },
+  {
+    id: 5,
+    value: "price",
+    text: "Price, low - hight",
+  },
+  {
+    id: 6,
+    value: "-createAt",
+    text: "Date, new - old",
+  },
+  {
+    id: 7,
+    value: "createAt",
+    text: "Date, old - new",
+  },
+];
+export const voteOption = [
+  {
+    id: 1,
+    text: "Terrible",
+  },
+  {
+    id: 2,
+    text: "Bad",
+  },
+
+  {
+    id: 3,
+    text: "Neutral",
+  },
+  {
+    id: 4,
+    text: "Good",
+  },
+  {
+    id: 5,
+    text: "Perfect",
+  },
 ];

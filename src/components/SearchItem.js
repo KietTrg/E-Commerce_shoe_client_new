@@ -3,6 +3,8 @@ import icons from "../ultils/icons";
 import { colors } from "../ultils/contants";
 import { createSearchParams, useNavigate, useParams } from "react-router-dom";
 import { apiGetProducts } from "../apis";
+import useDebounce from "../hooks/useDebounce";
+import Swal from "sweetalert2";
 
 const { AiOutlineDown } = icons;
 const SearchItem = ({
@@ -15,8 +17,8 @@ const SearchItem = ({
   const { category } = useParams();
   const [selected, setSetselected] = useState([]);
   const [price, setPrice] = useState({
-    from: 0,
-    to: 0,
+    from: "",
+    to: "",
   });
   const [bestPrice, setBestPrice] = useState(null);
   const handleSelect = (e) => {
@@ -45,18 +47,24 @@ const SearchItem = ({
   useEffect(() => {
     if (type === "input") fetchBestPriceProduct();
   }, [type]);
+  // useEffect(() => {
+  //   if (price.from > price.to)
+  //     Swal.fire("From price cannot greater than to price");
+  // }, [price]);
+
+  const deboucePriceFrom = useDebounce(price.from, 500);
+  const deboucePriceTo = useDebounce(price.to, 500);
   useEffect(() => {
     const data = {};
     if (Number(price.from) > 0) data.from = price.from;
     if (Number(price.to) > 0) data.to = price.to;
-
     navigate({
       pathname: `/${category}`,
       search: createSearchParams(data).toString(),
     });
 
-    console.log(price);
-  }, [price]);
+    // console.log(price);
+  }, [deboucePriceFrom, deboucePriceTo]);
   // console.log(selected);
   return (
     <div
@@ -115,7 +123,9 @@ const SearchItem = ({
                   className=" cursor-pointer underline hover:text-main"
                   onClick={(e) => {
                     e.stopPropagation();
-                    setSetselected([]);
+                    // setSetselected([]);
+                    setPrice({ from: "", to: "" });
+                    ChangeActiveFilter(null);
                   }}
                 >
                   Reset
