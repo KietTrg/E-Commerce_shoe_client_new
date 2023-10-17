@@ -4,7 +4,7 @@ import {
   BsShieldShaded,
   BsFillReplyFill,
 } from "react-icons/bs";
-import { MdEmail, MdTty } from "react-icons/md";
+import { MdEmail, MdTty, MdDashboard, MdGroups2 } from "react-icons/md";
 import {
   AiFillHome,
   AiFillStar,
@@ -21,6 +21,8 @@ import {
   BiSolidTruck,
 } from "react-icons/bi";
 import { IoIosArrowForward } from "react-icons/io";
+import { PiCirclesThreeFill } from "react-icons/pi";
+import { HiOutlineClipboardDocumentList } from "react-icons/hi2";
 const icons = {
   BsTelephoneFill,
   MdEmail,
@@ -40,5 +42,9 @@ const icons = {
   BsFillReplyFill,
   MdTty,
   AiOutlineDown,
+  MdDashboard,
+  MdGroups2,
+  PiCirclesThreeFill,
+  HiOutlineClipboardDocumentList,
 };
 export default icons;

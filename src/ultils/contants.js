@@ -1,6 +1,6 @@
 import path from "./path";
 import icons from "./icons";
-import { VoteOption } from "../components";
+// import { VoteOption } from "../components";
 export const navigation = [
   {
     id: 1,
@@ -28,8 +28,17 @@ export const navigation = [
     path: `/${path.FAQ}`,
   },
 ];
-const { BsShieldShaded, BiSolidTruck, AiFillGift, MdTty, BsFillReplyFill } =
-  icons;
+const {
+  BsShieldShaded,
+  BiSolidTruck,
+  AiFillGift,
+  MdTty,
+  BsFillReplyFill,
+  MdDashboard,
+  MdGroups2,
+  PiCirclesThreeFill,
+  HiOutlineClipboardDocumentList,
+} = icons;
 export const ProductExtraInfomation = [
   {
     id: 1,
@@ -153,5 +162,58 @@ export const voteOption = [
   {
     id: 5,
     text: "Perfect",
+  },
+];
+export const adminSidebar = [
+  {
+    id: 1,
+    type: "SINGLE",
+    text: "Dashboard",
+    path: `/${path.ADMIN}/${path.DASHBOARD}`,
+    icon: <MdDashboard size={25}></MdDashboard>,
+  },
+  {
+    id: 2,
+    type: "SINGLE",
+    text: "Manage users",
+    path: `/${path.ADMIN}/${path.MANAGE_USER}`,
+    icon: <MdGroups2 size={25}></MdGroups2>,
+  },
+  {
+    id: 3,
+    type: "PARENT",
+    text: "Manage products",
+    icon: <PiCirclesThreeFill size={25}></PiCirclesThreeFill>,
+    submenu: [
+      {
+        text: "Create product",
+        path: `/${path.ADMIN}/${path.CREATE_PRODUCTS}`,
+      },
+      {
+        text: "Manage products",
+        path: `/${path.ADMIN}/${path.MANAGE_PRODUCTS}`,
+      },
+    ],
+  },
+  {
+    id: 4,
+    type: "SINGLE",
+    text: "Manage order",
+    path: `/${path.ADMIN}/${path.MANAGE_ORDER}`,
+    icon: (
+      <HiOutlineClipboardDocumentList
+        size={25}
+      ></HiOutlineClipboardDocumentList>
+    ),
+  },
+];
+export const roles = [
+  {
+    code: 1,
+    value: "Admin",
+  },
+  {
+    code: 2,
+    value: "User",
   },
 ];
