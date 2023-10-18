@@ -79,6 +79,7 @@ const SearchItem = ({
     });
   }, [deboucePriceFrom, deboucePriceTo]);
   // console.log(selected);
+
   return (
     <div
       className=" cursor-pointer relative text-sm gap-6 p-2 rounded-xl border border-main flex justify-between items-center"

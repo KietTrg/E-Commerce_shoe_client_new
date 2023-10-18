@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useCallback } from "react";
 import { apiGetUsers, apiUpdateUser, apiDeleteUser } from "apis/user";
-import { roles } from "ultils/contants";
+import { roles, blockStatus } from "ultils/contants";
 import moment from "moment";
 import { MdGroups2 } from "react-icons/md";
 import Masonry from "react-masonry-css";
@@ -22,13 +22,14 @@ const ManageUser = () => {
     handleSubmit,
     register,
     formState: { errors },
+    reset,
   } = useForm({
     email: "",
     firstname: "",
     lastname: "",
     role: "",
-    phone: "",
-    status: "",
+    mobile: "",
+    isBlocked: "",
   });
   const [users, setUsers] = useState(null);
   const [queries, setQueries] = useState({
@@ -47,6 +48,7 @@ const ManageUser = () => {
   const render = useCallback(() => {
     setUpdate(!update);
   }, [update]);
+
   const queriesDebounce = useDebounce(queries.q, 800);
 
   useEffect(() => {
@@ -57,6 +59,7 @@ const ManageUser = () => {
 
   // console.log(editElm);
   const handleUpdate = async (data) => {
+    // console.log(data);
     const response = await apiUpdateUser(data, editElm._id);
     if (response.success) {
       setEditElm(null);
@@ -79,6 +82,17 @@ const ManageUser = () => {
       }
     });
   };
+  useEffect(() => {
+    if (editElm)
+      reset({
+        email: editElm.email,
+        firstname: editElm.firstname,
+        lastname: editElm.lastname,
+        role: editElm.role,
+        isBlocked: editElm.isBlocked,
+        mobile: editElm.mobile,
+      });
+  }, [editElm]);
   return (
     <div className="w-full ">
       <h1 className="h-[75px] flex justify-between items-center text-3xl font-bold p-4 border-b-2 border-main">
@@ -133,9 +147,9 @@ const ManageUser = () => {
       </div> */}
       <div className="w-full p-4 ">
         <div className="flex justify-between items-center py-2">
-          <div className="font-semibold text-main text-lg flex items-center gap-2">
+          <div className="font-semibold text-main text-lg flex  items-center gap-2">
             <h2>Total User: </h2>
-            <span>{users?.counts}</span>
+            <span>{`${users?.counts} users`}</span>
           </div>
           <InputField
             nameKey={"q"}
@@ -158,7 +172,7 @@ const ManageUser = () => {
                 key={el._id}
                 className={clsx(
                   "w-[390px]  bg-gray-100 p-2 rounded-xl shadow-lg flex flex-col gap-1",
-                  editElm?._id === el._id ? "h-[500px]" : "h-[310px]"
+                  editElm?._id === el._id ? "h-[600px]" : "h-[310px]"
                 )}
               >
                 <div className="text-main flex items-center gap-2 font-semibold text-2xl border-b-2 border-main">
@@ -228,7 +242,15 @@ const ManageUser = () => {
                   <span className="font-semibold">Role:</span>
                   <span>
                     {editElm?._id === el._id ? (
-                      <Select />
+                      <Select
+                        register={register}
+                        fullWidth
+                        errors={errors}
+                        defaultValue={+el.role}
+                        id={"role"}
+                        validate={{ required: "Require fill" }}
+                        options={roles}
+                      />
                     ) : (
                       <span>
                         {roles.find((role) => +role.code === +el.role)?.value}
@@ -264,9 +286,17 @@ const ManageUser = () => {
                   <span className="font-semibold">Status:</span>
                   <span>
                     {editElm?._id === el._id ? (
-                      <Select />
+                      <Select
+                        register={register}
+                        fullWidth
+                        errors={errors}
+                        defaultValue={el.isBlocked}
+                        id={"isBlocked"}
+                        validate={{ required: "Require fill" }}
+                        options={blockStatus}
+                      />
                     ) : (
-                      <span>{el.isBlocked ? "Blocke" : "Active"}</span>
+                      <span>{el.isBlocked ? "Blocked" : "Active"}</span>
                     )}
                   </span>
                 </div>
