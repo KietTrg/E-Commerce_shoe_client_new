@@ -19,7 +19,7 @@ const AdminSidebar = () => {
   return (
     <div className=" py-4 bg-black h-full rounded-r-2xl">
       <div className=" p-4 flex flex-col items-center justify-center gap-4">
-        <Link to={`/${path.HOME}`}>
+        <Link to={`/`}>
           <img src={logo} alt="logo" className="w-[200px] object-contain"></img>
         </Link>
         <small className="text-white text-sm italic ">Admin Workspace</small>

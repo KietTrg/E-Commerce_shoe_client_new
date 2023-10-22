@@ -40,7 +40,9 @@ const Footer = () => {
             </span>
             <span>
               <span>Phone</span>
-              <span className=" opacity-70">: (+1234)56789xxx</span>
+              <span className=" opacity-70">
+                <a href="tel: 0704875988">: 0704875988</a>
+              </span>
             </span>
             <span>
               <span>Mail</span>
@@ -69,7 +71,7 @@ const Footer = () => {
           </div>
           <div className="flex-1 flex flex-col gap-2">
             <h3 className="mb-[20px] text-[15px] font-medium border-l-2 border-main pl-[15px]">
-              #DIGITALWORLDSTORE
+              #STORESHOE
             </h3>
           </div>
         </div>

@@ -71,6 +71,7 @@ const ManageUser = () => {
     Swal.fire({
       title: "Are you sure ?",
       text: "Are you ready remove this user?",
+      icon: "warning",
       showCancelButton: true,
     }).then(async (result) => {
       if (result.isConfirmed) {
@@ -155,7 +156,7 @@ const ManageUser = () => {
             nameKey={"q"}
             value={queries.q}
             setValue={setQueries}
-            style="w500"
+            style="w500  border-none rounded-lg bg-blue-100"
             placeholder="Search name or mail user"
             isHideLabel
           ></InputField>

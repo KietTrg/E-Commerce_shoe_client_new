@@ -77,3 +77,12 @@ export const generateRange = (star, end) => {
   const length = end + 1 - star;
   return Array.from({ length }, (_, index) => star + index);
 };
+export function getBase64(file) {
+  if (!file) return "";
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+    reader.onload = () => resolve(reader.result);
+    reader.onerror = (error) => reject(error);
+  });
+}

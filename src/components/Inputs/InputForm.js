@@ -12,6 +12,7 @@ const InputForm = ({
   fullWidth,
   defaultValue,
   style,
+  readOnly,
 }) => {
   return (
     <div className={clsx("flex flex-col gap-2 h-[78px] ", style)}>
@@ -28,6 +29,7 @@ const InputForm = ({
           style
         )}
         defaultValue={defaultValue}
+        readOnly={readOnly}
       ></input>
       {errors[id] && (
         <small className="text-xs text-red-600">{errors[id]?.message}</small>

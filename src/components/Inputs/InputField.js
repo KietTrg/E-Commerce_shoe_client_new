@@ -27,7 +27,7 @@ const InputField = ({
         name=""
         id=""
         className={clsx(
-          "px-4 py-2 rounded-sm w-full mt-2 border-b border-gray-300 placeholder:text-sm outline-none",
+          "px-4 py-2 rounded-lg w-full mt-2 border-b border-gray-300 placeholder:text-sm outline-none",
           style
         )}
         placeholder={

@@ -183,6 +183,7 @@ const Login = () => {
             </div>
           )}
           <InputField
+            fullWidth
             value={payload.email}
             setValue={setPayload}
             nameKey="email"
@@ -191,6 +192,7 @@ const Login = () => {
           />
           {isRegiter && (
             <InputField
+              fullWidth
               value={payload.mobile}
               setValue={setPayload}
               nameKey="mobile"
@@ -199,6 +201,7 @@ const Login = () => {
             />
           )}
           <InputField
+            fullWidth
             value={payload.password}
             setValue={setPayload}
             nameKey="password"
