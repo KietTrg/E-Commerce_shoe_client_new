@@ -66,6 +66,8 @@ const CreateProducts = () => {
         data.category = categories?.find(
           (el) => el._id === data.category
         )?.title;
+      // const datasize = data.size.split(",");
+      // console.log(datasize);
       const finalPayload = { ...data, ...payload };
       // console.log({ ...data, ...payload });
       const formData = new FormData();
@@ -74,6 +76,17 @@ const CreateProducts = () => {
       if (finalPayload.images) {
         for (let image of finalPayload.images) formData.append("images", image);
       }
+      if (finalPayload.size) {
+        // finalPayload.size = finalPayload.size.split(",").map((s) => s.trim());
+        const sizeArray = finalPayload.size.split(",");
+        for (let size of sizeArray) {
+          formData.append("size", size);
+
+          console.log("size: ", size);
+        }
+        console.log("finalPayload.size: ", sizeArray);
+      }
+      console.log("formData: ", formData);
       dispatch(showModal({ isShowModal: true, modalChildren: <Loading /> }));
       const response = await apiCreateProduct(formData);
       dispatch(showModal({ isShowModal: false, modalChildren: null }));

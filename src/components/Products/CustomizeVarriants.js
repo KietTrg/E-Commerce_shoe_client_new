@@ -9,6 +9,7 @@ import { toast } from "react-toastify";
 import { showModal } from "store/app/appSlice";
 import Swal from "sweetalert2";
 import { getBase64 } from "ultils/helpers";
+import { HashLoader } from "react-spinners";
 
 const CustomizeVarriants = ({
   cumtomizeVarriant,
@@ -26,6 +27,7 @@ const CustomizeVarriants = ({
     thumb: "",
     images: "",
   });
+  const [isLoading, setIsLoading] = useState(false);
   const dispatch = useDispatch();
   useEffect(() => {
     reset({
@@ -45,12 +47,22 @@ const CustomizeVarriants = ({
       const formData = new FormData();
       for (let i of Object.entries(data)) formData.append(i[0], i[1]);
       if (data.thumb) formData.append("thumb", data.thumb[0]);
+      //////
       if (data.images) {
         for (let image of data.images) formData.append("images", image);
       }
-      dispatch(showModal({ isShowModal: true, modalChildren: <Loading /> }));
+      if (data.size) {
+        // finalPayload.size = finalPayload.size.split(",").map((s) => s.trim());
+        const sizeArray = data.size.split(",");
+        for (let size of sizeArray) {
+          formData.append("size", size);
+        }
+      }
+      // dispatch(showModal({ isShowModal: true, modalChildren: <Loading /> }));
+      setIsLoading(true);
       const response = await apiAddVarriant(formData, cumtomizeVarriant._id);
-      dispatch(showModal({ isShowModal: false, modalChildren: null }));
+      // dispatch(showModal({ isShowModal: false, modalChildren: null }));
+      setIsLoading(false);
 
       if (response.success) {
         toast.success(response.mes);
@@ -209,7 +221,12 @@ const CustomizeVarriants = ({
           </div>
         )}
         <div className="my-6">
-          <Button type="submit">Add Varriants Product</Button>
+          {!isLoading ? (
+            <Button type="submit">Add Varriants Product</Button>
+          ) : (
+            // <div className="w-7 h-7 border-4 border-gray-300 rounded-full border-t-transparent animate-spin"></div>
+            <HashLoader className=" z-500" color="#005f90"></HashLoader>
+          )}
         </div>
       </form>
     </div>

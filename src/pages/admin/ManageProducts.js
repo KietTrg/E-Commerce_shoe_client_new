@@ -13,6 +13,9 @@ import {
 import useDebounce from "hooks/useDebounce";
 import Swal from "sweetalert2";
 import { toast } from "react-toastify";
+import { TbEdit } from "react-icons/tb";
+import { RiDeleteBin2Fill } from "react-icons/ri";
+import { BiCustomize } from "react-icons/bi";
 
 const ManageProducts = () => {
   const navigate = useNavigate();
@@ -170,24 +173,26 @@ const ManageProducts = () => {
                   {moment(el.updatedAt).format("DD/MM/YYYY")}
                 </td>
                 <td>
-                  <span
-                    onClick={() => seteditProduct(el)}
-                    className="text-main hover:underline cursor-pointer px-1"
-                  >
-                    Edit
-                  </span>
-                  <span
-                    onClick={() => handleDeleteProduct(el._id)}
-                    className="text-main hover:underline cursor-pointer px-1"
-                  >
-                    Delete
-                  </span>
-                  <span
-                    onClick={() => setCumtomizeVarriant(el)}
-                    className="text-main hover:underline cursor-pointer px-1"
-                  >
-                    Varriants
-                  </span>
+                  <div className="flex items-center justify-center">
+                    <span
+                      onClick={() => seteditProduct(el)}
+                      className="text-main hover:text-orange-600 cursor-pointer px-1 "
+                    >
+                      <TbEdit size={20}></TbEdit>
+                    </span>
+                    <span
+                      onClick={() => handleDeleteProduct(el._id)}
+                      className="text-main hover:text-orange-600 cursor-pointer px-1"
+                    >
+                      <RiDeleteBin2Fill size={20}></RiDeleteBin2Fill>
+                    </span>
+                    <span
+                      onClick={() => setCumtomizeVarriant(el)}
+                      className="text-main hover:text-orange-600 cursor-pointer px-1"
+                    >
+                      <BiCustomize size={20}></BiCustomize>
+                    </span>
+                  </div>
                 </td>
               </tr>
             ))}

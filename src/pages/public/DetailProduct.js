@@ -31,6 +31,8 @@ const DetailProduct = ({ normal }) => {
   const [relatedProducts, setRelatedProducts] = useState(null);
   const [update, setUpdate] = useState(false);
   const [varriant, setVarriant] = useState(null);
+  const [skuSize, setSkuSize] = useState(null);
+  console.log("skuSize: ", skuSize);
   const [currentProduct, setCurrentProduct] = useState({
     title: "",
     thumb: "",
@@ -193,7 +195,10 @@ const DetailProduct = ({ normal }) => {
             <span className="font-bold">Color:</span>
             <div className="flex flex-wrap gap-4 items-center w-full">
               <div
-                onClick={() => setVarriant(null)}
+                onClick={() => {
+                  setVarriant(null);
+                  setSkuSize(null);
+                }}
                 className={clsx(
                   "flex items-center gap-2 p-2 border cursor-pointer",
                   !varriant && "border-main"
@@ -206,12 +211,17 @@ const DetailProduct = ({ normal }) => {
                 ></img>
                 <span className="flex flex-col">
                   <span>{product?.color}</span>
-                  <span className="text-sm">{product?.price}</span>
+                  <span className="text-sm">{`${formatMoney(
+                    formatPrice(product?.price)
+                  )} VND`}</span>
                 </span>
               </div>
               {product?.varriants?.map((el) => (
                 <div
-                  onClick={() => setVarriant(el.sku)}
+                  onClick={() => {
+                    setVarriant(el.sku);
+                    setSkuSize(el.sku);
+                  }}
                   className={clsx(
                     "flex items-center gap-2 p-2 border cursor-pointer",
                     varriant === el.sku && "border-main"
@@ -233,28 +243,36 @@ const DetailProduct = ({ normal }) => {
           <div className="my-4 flex  gap-4">
             <span className="font-bold">Size:</span>
             <div className="flex flex-wrap gap-4 items-center w-full">
-              <div
-                onClick={() => setVarriant(null)}
-                className={clsx(
-                  "flex items-center gap-2 p-2 border cursor-pointer",
-                  !varriant && "border-main"
-                )}
-              >
-                <span className="flex flex-col">
-                  <span>{product?.size}</span>
-                </span>
-              </div>
+              {skuSize === null &&
+                product?.size?.map((el) => (
+                  <div
+                    onClick={() => setVarriant(null)}
+                    className={clsx(
+                      "flex items-center gap-2 p-2 border cursor-pointer",
+                      !varriant && "border-main"
+                    )}
+                  >
+                    <span className="flex flex-col">
+                      <span>{el}</span>
+                    </span>
+                  </div>
+                ))}
               {product?.varriants?.map((el) => (
-                <div
-                  onClick={() => setVarriant(el.sku)}
-                  className={clsx(
-                    "flex items-center gap-2 p-2 border cursor-pointer",
-                    varriant === el.sku && "border-main"
-                  )}
-                >
-                  <span className="flex flex-col">
-                    <span>{el?.size}</span>
-                  </span>
+                <div className="flex items-center gap-2">
+                  {skuSize === el.sku &&
+                    el?.size?.map((e) => (
+                      <div
+                        className={clsx(
+                          "flex items-center gap-2 p-2 border cursor-pointer",
+                          varriant === el.sku && "border-main"
+                        )}
+                        onClick={() => setVarriant(el.sku)}
+                      >
+                        <span className="flex flex-col">
+                          <span>{e}</span>
+                        </span>
+                      </div>
+                    ))}
                 </div>
               ))}
             </div>

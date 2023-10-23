@@ -7,17 +7,33 @@ import { SelectOption } from "..";
 import icons from "ultils/icons";
 import { Link } from "react-router-dom";
 import path from "ultils/path";
+import withBase from "hocs/withBase";
 
 const { AiFillEye, BiMenu, BsSuitHeartFill } = icons;
-const Product = ({ productDatas, isNew, normal }) => {
+const Product = ({ productDatas, isNew, normal, navigate }) => {
   const [isShowOption, setIsShowOption] = useState(false);
+  const handleClickOption = (e, flag) => {
+    e.stopPropagation();
+    if (flag === "MENU")
+      navigate(
+        `/${productDatas?.category?.toLowerCase()}/${productDatas?._id}/${
+          productDatas?.title
+        }`
+      );
+    if (flag === "WISHLIST") console.log("Wishlist");
+    if (flag === "QUICK_VIEW") console.log("QUICK_VIEW");
+  };
   return (
     <div className=" w-full text-base  px-[10px]">
-      <Link
-        to={`/${productDatas?.category?.toLowerCase()}/${productDatas?._id}/${
-          productDatas?.title
-        }`}
+      <div
         className="w-full mb-2 shadow-lg rounded-xl  p-[15px] flex flex-col items-start"
+        onClick={(e) =>
+          navigate(
+            `/${productDatas?.category?.toLowerCase()}/${productDatas?._id}/${
+              productDatas?.title
+            }`
+          )
+        }
         onMouseEnter={(e) => {
           e.stopPropagation();
           setIsShowOption(true);
@@ -30,9 +46,15 @@ const Product = ({ productDatas, isNew, normal }) => {
         <div className="w-full flex items-center justify-center relative">
           {isShowOption && (
             <div className=" absolute bottom-[-10px] flex justify-center left-0 right-0 gap-2 animate-slide-top ">
-              <SelectOption icons={<AiFillEye />} />
-              <SelectOption icons={<BiMenu />} />
-              <SelectOption icons={<BsSuitHeartFill />} />
+              <span onClick={(e) => handleClickOption(e, "QUICK_VIEW")}>
+                <SelectOption icons={<AiFillEye />} />
+              </span>
+              <span onClick={(e) => handleClickOption(e, "MENU")}>
+                <SelectOption icons={<BiMenu />} />
+              </span>
+              <span onClick={(e) => handleClickOption(e, "WISHLIST")}>
+                <SelectOption icons={<BsSuitHeartFill />} />
+              </span>
             </div>
           )}
 
@@ -63,9 +85,9 @@ const Product = ({ productDatas, isNew, normal }) => {
           <span className=" line-clamp-1">{productDatas?.title}</span>
           <span>{`${formatMoney(productDatas?.price)} VND`}</span>
         </div>
-      </Link>
+      </div>
     </div>
   );
 };
 
-export default memo(Product);
+export default withBase(memo(Product));
