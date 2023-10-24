@@ -1,6 +1,6 @@
 import React, { useCallback, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { apiGetProduct, apiGetProducts } from "apis";
+import { createSearchParams, useParams } from "react-router-dom";
+import { apiGetProduct, apiGetProducts, apiUpdateCart } from "apis";
 import {
   Breadcrumb,
   Button,
@@ -15,6 +15,12 @@ import { formatMoney, formatPrice, renderStarFromNumber } from "ultils/helpers";
 import { ProductExtraInfomation } from "ultils/contants";
 import DOMPurify from "dompurify";
 import clsx from "clsx";
+import { useSelector } from "react-redux";
+import { getCurrent } from "store/user/asyncActions";
+import withBase from "hocs/withBase";
+import { toast } from "react-toastify";
+import path from "ultils/path";
+import Swal from "sweetalert2";
 
 const settings = {
   dots: false, //dau cham
@@ -23,8 +29,9 @@ const settings = {
   slidesToShow: 3, //trong 1 lan show
   slidesToScroll: 1,
 };
-const DetailProduct = ({ normal }) => {
-  const { pid, title, category } = useParams();
+const DetailProduct = ({ isQuickView, data, location, dispatch, navigate }) => {
+  const params = useParams();
+  const { current } = useSelector((state) => state.user);
   const [product, setProduct] = useState(null);
   const [currentImage, setCurrentImage] = useState(null);
   const [quantity, setQuantity] = useState(1);
@@ -32,15 +39,25 @@ const DetailProduct = ({ normal }) => {
   const [update, setUpdate] = useState(false);
   const [varriant, setVarriant] = useState(null);
   const [skuSize, setSkuSize] = useState(null);
-  console.log("skuSize: ", skuSize);
+  const [pid, setPid] = useState(null);
+  const [category, setCategory] = useState(null);
   const [currentProduct, setCurrentProduct] = useState({
     title: "",
     thumb: "",
-    images: "",
+    images: [],
     size: "",
     price: "",
     color: "",
   });
+  useEffect(() => {
+    if (data) {
+      setPid(data.pid);
+      setCategory(data.category);
+    } else if (params && params.pid) {
+      setPid(params.pid);
+      setCategory(params.category);
+    }
+  }, [data, params]);
   const fetchProductData = async () => {
     const response = await apiGetProduct(pid);
     if (response.success) {
@@ -58,6 +75,15 @@ const DetailProduct = ({ normal }) => {
         price: product?.varriants?.find((el) => el.sku === varriant)?.price,
         size: product?.varriants?.find((el) => el.sku === varriant)?.size,
         thumb: product?.varriants?.find((el) => el.sku === varriant)?.thumb,
+      });
+    } else {
+      setCurrentProduct({
+        title: product?.title,
+        color: product?.color,
+        images: product?.images || [],
+        price: product?.price,
+        size: product?.size,
+        thumb: product?.thumb,
       });
     }
   }, [varriant]);
@@ -98,22 +124,62 @@ const DetailProduct = ({ normal }) => {
     e.stopPropagation();
     setCurrentImage(el);
   };
+  const handleAddToCart = async () => {
+    if (!current)
+      return Swal.fire({
+        title: "Almost...",
+        text: "Please login first",
+        icon: "info",
+        confirmButtonText: "Go login page",
+        cancelButtonText: "Not now!",
+        showCancelButton: true,
+      }).then((rs) => {
+        if (rs.isConfirmed)
+          navigate({
+            pathname: `/${path.LOGIN}`,
+            search: createSearchParams({
+              redirect: location.pathname,
+            }).toString(),
+          });
+      });
+    const response = await apiUpdateCart({
+      pid: pid,
+      color: currentProduct?.color || product?.color,
+      size: currentProduct?.size[0] || product?.size[0],
+      quantity: quantity,
+      price: currentProduct?.price || product?.price,
+      thumbnail: currentProduct?.thumb || product?.thumb,
+      title: currentProduct?.title || product?.title,
+    });
+    if (response.success) {
+      console.log("response: ", response);
+      toast.success(response.mes);
+      dispatch(getCurrent());
+    } else toast.error(response.mes);
+  };
   // console.log(pid, title);
   return (
-    <div className="w-full">
-      <div className="h-[81px] flex justify-center items-center bg-gray-100">
-        <div className="w-main">
-          <h3 className="font-semibold mb-2">
-            {currentProduct.title || product?.title}
-          </h3>
-          <Breadcrumb
-            title={currentProduct.title || product?.title}
-            category={category}
-          ></Breadcrumb>
+    <div className={clsx("w-full")}>
+      {!isQuickView && (
+        <div className="h-[81px] flex justify-center items-center bg-gray-100">
+          <div className="w-main">
+            <h3 className="font-semibold mb-2">{product?.title}</h3>
+            <Breadcrumb title={product?.title} category={category}></Breadcrumb>
+          </div>
         </div>
-      </div>
-      <div className="w-main m-auto mt-4 flex">
-        <div className=" flex flex-col gap-4 w-2/5">
+      )}
+      <div
+        onClick={(e) => e.stopPropagation()}
+        className={clsx(
+          " bg-white m-auto mt-4 flex",
+          isQuickView
+            ? "max-w-[900px] gap-16 p-8 max-h-[80vh] overflow-y-auto"
+            : "w-main"
+        )}
+      >
+        <div
+          className={clsx(" flex flex-col gap-4 w-2/5", isQuickView && "w-1/2")}
+        >
           <div className="h-[458px] w-[458px] border flex items-center object-cover">
             <ReactImageMagnify
               {...{
@@ -149,7 +215,7 @@ const DetailProduct = ({ normal }) => {
                   </div>
                 ))}
               {currentProduct.images.length > 0 &&
-                currentProduct.images?.map((el) => (
+                currentProduct?.images?.map((el) => (
                   <div key={el} className="flex-1 ">
                     <img
                       onClick={(e) => handleClickImage(e, el)}
@@ -162,7 +228,12 @@ const DetailProduct = ({ normal }) => {
             </Slider>
           </div>
         </div>
-        <div className="w-2/5 flex flex-col gap-4 pr-[24px]  ">
+        <div
+          className={clsx(
+            "w-2/5 flex flex-col gap-4 pr-[24px]  ",
+            isQuickView && "w-1/2"
+          )}
+        >
           <div className="flex items-center justify-between">
             <h2 className="font-semibold text-[30px]">{`${formatMoney(
               formatPrice(currentProduct.price || product?.price)
@@ -218,6 +289,7 @@ const DetailProduct = ({ normal }) => {
               </div>
               {product?.varriants?.map((el) => (
                 <div
+                  key={el.sku}
                   onClick={() => {
                     setVarriant(el.sku);
                     setSkuSize(el.sku);
@@ -286,40 +358,48 @@ const DetailProduct = ({ normal }) => {
                 handleChangeQuantity={handleChangeQuantity}
               ></SelectQuantity>
             </div>
-            <Button fw>Add to cart</Button>
+            <Button handleOnClick={handleAddToCart} fw>
+              Add to cart
+            </Button>
           </div>
         </div>
-        <div className="w-1/5 ">
-          {ProductExtraInfomation.map((el) => (
-            <ProductExtraInfoItem
-              key={el.id}
-              title={el.title}
-              sub={el.sub}
-              icon={el.icon}
-            />
-          ))}
+        {!isQuickView && (
+          <div className="w-1/5 ">
+            {ProductExtraInfomation.map((el) => (
+              <ProductExtraInfoItem
+                key={el.id}
+                title={el.title}
+                sub={el.sub}
+                icon={el.icon}
+              />
+            ))}
+          </div>
+        )}
+      </div>
+      {!isQuickView && (
+        <div className="w-main m-auto mt-8">
+          <ProductInfomation
+            totalRatings={product?.totalRatings}
+            ratings={product?.ratings}
+            nameProduct={product?.title}
+            pid={product?._id}
+            rerender={rerender}
+          />
         </div>
-      </div>
-      <div className="w-main m-auto mt-8">
-        <ProductInfomation
-          totalRatings={product?.totalRatings}
-          ratings={product?.ratings}
-          nameProduct={product?.title}
-          pid={product?._id}
-          rerender={rerender}
-        />
-      </div>
-      <div className="w-main m-auto mt-8">
-        <h3 className="text-[20px] font-semibold py-[15px] border-b-2 border-main">
-          OTHER CUSTOMERS ALSO BUY:
-        </h3>
-        <div className="  mt-4 mx-[-10px] ">
-          <CustomSlider normal={true} products={relatedProducts} />
+      )}
+      {!isQuickView && (
+        <div className="w-main m-auto mt-8">
+          <h3 className="text-[20px] font-semibold py-[15px] border-b-2 border-main">
+            OTHER CUSTOMERS ALSO BUY:
+          </h3>
+          <div className="  mt-4 mx-[-10px] ">
+            <CustomSlider normal={true} products={relatedProducts} />
+          </div>
         </div>
-      </div>
+      )}
       {/* <div className="h-[500px] w-full"></div> */}
     </div>
   );
 };
 
-export default DetailProduct;
+export default withBase(DetailProduct);

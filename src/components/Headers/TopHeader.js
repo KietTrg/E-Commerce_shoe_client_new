@@ -6,6 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import icons from "ultils/icons";
 import { logout, clearMessage } from "store/user/userSlice";
 import Swal from "sweetalert2";
+import withBase from "hocs/withBase";
 const { BiLogOut } = icons;
 const TopHeader = () => {
   const dispatch = useDispatch();
@@ -50,4 +51,4 @@ const TopHeader = () => {
   );
 };
 
-export default memo(TopHeader);
+export default withBase(TopHeader);

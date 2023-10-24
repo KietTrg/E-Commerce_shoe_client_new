@@ -7,7 +7,7 @@ import {
   apiFinalRegister,
 } from "apis/user";
 import Swal from "sweetalert2";
-import { useNavigate, Link } from "react-router-dom";
+import { useNavigate, Link, useSearchParams } from "react-router-dom";
 import path from "ultils/path";
 import { login } from "store/user/userSlice";
 import { showModal } from "store/app/appSlice";
@@ -27,6 +27,7 @@ const Login = () => {
   const [invalidFields, setInvalidFields] = useState([]);
   const [isForgotPassword, setIsForgotPassword] = useState(false);
   const [isRegiter, setIsRegiter] = useState(false);
+  const [searchParams] = useSearchParams();
   const resetPayload = () => {
     setPayload({
       email: "",
@@ -80,7 +81,9 @@ const Login = () => {
               useData: rs.useData,
             })
           );
-          navigate(`/${path.HOME}`);
+          searchParams.get("redirect")
+            ? navigate(searchParams.get("redirect"))
+            : navigate(`/${path.HOME}`);
         } else Swal.fire("Opps!", rs.mes, "error");
       }
     }

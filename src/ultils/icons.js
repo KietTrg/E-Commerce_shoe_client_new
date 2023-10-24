@@ -3,6 +3,7 @@ import {
   BsSuitHeartFill,
   BsShieldShaded,
   BsFillReplyFill,
+  BsCartPlusFill,
 } from "react-icons/bs";
 import { MdEmail, MdTty, MdDashboard, MdGroups2 } from "react-icons/md";
 import {
@@ -46,5 +47,6 @@ const icons = {
   MdGroups2,
   PiCirclesThreeFill,
   HiOutlineClipboardDocumentList,
+  BsCartPlusFill,
 };
 export default icons;

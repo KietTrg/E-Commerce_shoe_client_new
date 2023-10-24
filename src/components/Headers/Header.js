@@ -5,11 +5,13 @@ import { Link } from "react-router-dom";
 import path from "ultils/path";
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "store/user/userSlice";
+import withBase from "hocs/withBase";
+import { showCart } from "store/app/appSlice";
 const { BsTelephoneFill, MdEmail, BiSolidShoppingBagAlt, BiSolidUser } = icons;
-const Header = () => {
+const Header = ({ dispatch }) => {
   const { current } = useSelector((state) => state.user);
   const [isShowOption, setIsShowOption] = useState(false);
-  const dispatch = useDispatch();
+  // const dispatch = useDispatch();
   useEffect(() => {
     const handleClickoutOptions = (e) => {
       const profile = document.getElementById("profile");
@@ -42,9 +44,12 @@ const Header = () => {
         </div>
         {current && (
           <Fragment>
-            <div className=" cursor-pointer flex items-center justify-center gap-2 px-6 border-r">
+            <div
+              onClick={() => dispatch(showCart())}
+              className=" cursor-pointer flex items-center justify-center gap-2 px-6 border-r"
+            >
               <BiSolidShoppingBagAlt color="#005f90"></BiSolidShoppingBagAlt>
-              <span>0 item(s)</span>
+              <span>{`${current?.cart?.length || 0} item(s)`}</span>
             </div>
             <div
               onClick={() => setIsShowOption((prev) => !prev)}
@@ -88,4 +93,4 @@ const Header = () => {
   );
 };
 
-export default memo(Header);
+export default withBase(memo(Header));
