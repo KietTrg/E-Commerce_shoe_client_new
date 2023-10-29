@@ -33,7 +33,7 @@ const Cart = ({ dispatch, navigate }) => {
           onClick={() => dispatch(showCart())}
           className=" cursor-pointer p-2"
         >
-          <AiOutlineClose />
+          <AiOutlineClose className=" hover:text-red-600" />
         </span>
       </header>
       <section className="gap-3 flex flex-col row-span-7 h-full  max-h-full overflow-y-auto py-3">
@@ -60,9 +60,9 @@ const Cart = ({ dispatch, navigate }) => {
               </div>
               <span
                 onClick={() => removeCart(el?.product?._id, el.color)}
-                className="h-8 w-8 flex items-center justify-center rounded-full hover:bg-gray-300"
+                className="h-8 w-8 flex items-center justify-center rounded-full hover:bg-gray-300 cursor-pointer"
               >
-                <RiDeleteBin2Fill></RiDeleteBin2Fill>
+                <RiDeleteBin2Fill className=" hover:text-red-600"></RiDeleteBin2Fill>
               </span>
             </div>
           ))}
@@ -70,20 +70,18 @@ const Cart = ({ dispatch, navigate }) => {
       <div className=" row-span-2 flex flex-col justify-between h-full">
         <div className="flex items-center justify-between pt-4 border-t">
           <span>Subtotal:</span>
-          <span>{`${formatMoney(
+          <span className="font-medium">{`${formatMoney(
             currentCart?.reduce(
               (sum, el) => sum + Number(el?.price) * el?.quantity,
               0
             )
           )} vnd`}</span>
         </div>
-        <span className=" text-center text-gray-700 italic text-xs">
-          jdfjfjsjfdjsjsjdfjjdjdjfjdsj
-        </span>
+
         <Button
           handleOnClick={() => {
             dispatch(showCart());
-            navigate(`/${path.DETAIL_CART}`);
+            navigate(`/${path.MEMBER}/${path.DETAIL_CART}`);
           }}
           fw
         >

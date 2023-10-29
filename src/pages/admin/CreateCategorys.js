@@ -4,11 +4,11 @@ import { useForm } from "react-hook-form";
 import { useSelector, useDispatch } from "react-redux";
 import { validate, getBase64 } from "ultils/helpers";
 import { toast } from "react-toastify";
-import { apiCreateProduct } from "apis";
+import { apiCreateCategory } from "apis";
 import { showModal } from "store/app/appSlice";
 import Swal from "sweetalert2";
 // import { RiDeleteBin2Fill } from "react-icons/ri";
-const CreateProducts = () => {
+const CreateCategorys = () => {
   const { categories } = useSelector((state) => state.app);
   const dispatch = useDispatch();
   const {
@@ -18,98 +18,53 @@ const CreateProducts = () => {
     handleSubmit,
     watch,
   } = useForm();
-
-  const [payload, setPayload] = useState({
-    description: "",
-  });
+  const [payload, setPayload] = useState();
   const [preview, setPreview] = useState({
-    thumb: null,
-    images: [],
+    image: null,
   });
-  const [invalidFields, setInvalidFields] = useState([]);
-  const changeValue = useCallback(
-    (e) => {
-      setPayload(e);
-    },
-    [payload]
-  );
-  const [hoverElm, setHoverElm] = useState(null);
-  const handlePreviewThumb = async (file) => {
+  const handlePreviewImage = async (file) => {
     const base64Thumb = await getBase64(file);
-    setPreview((prev) => ({ ...prev, thumb: base64Thumb }));
-  };
-  const handlePreviewImages = async (files) => {
-    const imagesPreview = [];
-    for (let file of files) {
-      if (file.type !== "image/png" && file.type !== "image/jpg") {
-        toast.warning("File not support");
-        // Swal.fire("File not support", "errors");
-      }
-      const base64 = await getBase64(file);
-      imagesPreview.push({ name: file.name, path: base64 });
-    }
-    setPreview((prev) => ({ ...prev, images: imagesPreview }));
+    setPreview((prev) => ({ ...prev, image: base64Thumb }));
   };
   useEffect(() => {
-    handlePreviewThumb(watch("thumb")[0]);
+    handlePreviewImage(watch("image")[0]);
     // console.log(watch("thumb"));
-  }, [watch("thumb")]);
-  useEffect(() => {
-    handlePreviewImages(watch("images"));
-    // console.log(watch("thumb"));
-  }, [watch("images")]);
+  }, [watch("image")]);
+  const handleCreateCategory = async (data) => {
+    const finalPayload = { ...data, ...payload };
+    console.log("finalPayload: ", finalPayload);
+    const formData = new FormData();
+    for (let i of Object.entries(finalPayload)) formData.append(i[0], i[1]);
+    if (finalPayload.image) formData.append("image", finalPayload.image[0]);
+    if (finalPayload.brand) {
+      // finalPayload.brand = finalPayload.brand.split(",").map((s) => s.trim());
+      const brandArray = finalPayload.brand.split(",");
+      for (let brand of brandArray) {
+        formData.append("brand", brand);
 
-  const handleCreateProduct = async (data) => {
-    const invalids = validate(payload, setInvalidFields);
-    if (invalids === 0) {
-      if (data.category)
-        data.category = categories?.find(
-          (el) => el._id === data.category
-        )?.title;
-      // const datasize = data.size.split(",");
-      // console.log(datasize);
-      const finalPayload = { ...data, ...payload };
-      // console.log({ ...data, ...payload });
-      const formData = new FormData();
-      for (let i of Object.entries(finalPayload)) formData.append(i[0], i[1]);
-      if (finalPayload.thumb) formData.append("thumb", finalPayload.thumb[0]);
-      if (finalPayload.images) {
-        for (let image of finalPayload.images) formData.append("images", image);
+        console.log("brand: ", brand);
       }
-      if (finalPayload.size) {
-        // finalPayload.size = finalPayload.size.split(",").map((s) => s.trim());
-        const sizeArray = finalPayload.size.split(",");
-        for (let size of sizeArray) {
-          formData.append("size", size);
-
-          console.log("size: ", size);
-        }
-        console.log("finalPayload.size: ", sizeArray);
-      }
-      console.log("formData: ", formData);
-      dispatch(showModal({ isShowModal: true, modalChildren: <Loading /> }));
-      const response = await apiCreateProduct(formData);
-      dispatch(showModal({ isShowModal: false, modalChildren: null }));
-
-      if (response.success) {
-        toast.success(response.mes);
-        reset();
-        setPayload({
-          thumb: "",
-          image: [],
-        });
-      } else toast.error(response.mes);
+      console.log("finalPayload.brand: ", brandArray);
     }
+    const response = await apiCreateCategory(formData);
+    console.log("response: ", response);
+    if (response.success) {
+      toast.success(response.mes);
+      reset();
+      setPayload({
+        image: "",
+      });
+    } else toast.error(response.mes);
   };
   return (
     <div className="w-full ">
       <h1 className="h-[75px] flex justify-between items-center text-3xl font-bold p-4 border-b-2 border-main">
-        <span className="text-main">Create New Product</span>
+        <span className="text-main">Create New Category</span>
       </h1>
       <div className="p-4">
-        <form onSubmit={handleSubmit(handleCreateProduct)}>
+        <form onSubmit={handleSubmit(handleCreateCategory)}>
           <InputForm
-            label="Name product"
+            label="Name Category"
             register={register}
             errors={errors}
             id="title"
@@ -117,19 +72,31 @@ const CreateProducts = () => {
               required: "Need fill this field",
             }}
             style="flex-1"
-            placeholder="Name of new product"
+            placeholder="Name of new Category"
           />
-          <div className="w-full flex gap-4 my-6">
+          <InputForm
+            label="Brand Category"
+            register={register}
+            errors={errors}
+            id="brand"
+            validate={{
+              required: "Need fill this field",
+            }}
+            style="flex-auto"
+            placeholder="Brand of new Category"
+            fullWidth
+          />
+          {/* <div className="w-full flex gap-4 my-6">
             <InputForm
-              label="Price product"
+              label="Brand Category"
               register={register}
               errors={errors}
-              id="price"
+              id="brand"
               validate={{
                 required: "Need fill this field",
               }}
               style="flex-auto"
-              placeholder="Price of new product"
+              placeholder="Price of new Category"
               type="number"
               fullWidth
             />
@@ -199,39 +166,39 @@ const CreateProducts = () => {
               errors={errors}
               fullWidth
             />
-          </div>
-          <MarkdownEditor
+          </div> */}
+          {/* <MarkdownEditor
             name="description"
             changeValue={changeValue}
             label="Description"
             invalidFields={invalidFields}
             setInvalidFields={setInvalidFields}
-          />
+          /> */}
           <div className="flex flex-col gap-2 mt-8">
-            <label className="font-semibold" htmlFor="thumb">
-              Upload image thumb
+            <label className="font-semibold" htmlFor="image">
+              Upload image image
             </label>
             <input
               type="file"
-              id="thumb"
-              {...register("thumb", { required: "Need fill" })}
+              id="image"
+              {...register("image", { required: "Need fill" })}
             />
-            {errors["thumb"] && (
+            {errors["image"] && (
               <small className="text-xs text-red-600">
-                {errors["thumb"]?.message}
+                {errors["image"]?.message}
               </small>
             )}
           </div>
-          {preview.thumb && (
+          {preview.image && (
             <div className="my-4">
               <img
                 className="w-[200px] object-contain"
-                src={preview.thumb}
-                alt="thumb"
+                src={preview.image}
+                alt="image"
               ></img>
             </div>
           )}
-          <div className="flex flex-col gap-2 mt-8">
+          {/* <div className="flex flex-col gap-2 mt-8">
             <label className="font-semibold" htmlFor="products">
               Upload images of product
             </label>
@@ -256,21 +223,10 @@ const CreateProducts = () => {
                     src={el.path}
                     alt="product"
                   ></img>
-                  {/* {hoverElm === el.name && (
-                    <div
-                      className=" cursor-pointer absolute inset-0 bg-overlay animate-slide-top flex items-center justify-center"
-                      onClick={() => handleRemoveImage(el.name)}
-                    >
-                      <RiDeleteBin2Fill
-                        size={35}
-                        color="white"
-                      ></RiDeleteBin2Fill>
-                    </div>
-                  )} */}
                 </div>
               ))}
             </div>
-          )}
+          )} */}
           <div className="my-6">
             <Button type="submit">Create New Product</Button>
           </div>
@@ -280,4 +236,4 @@ const CreateProducts = () => {
   );
 };
 
-export default CreateProducts;
+export default CreateCategorys;

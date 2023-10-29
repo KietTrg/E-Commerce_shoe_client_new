@@ -29,11 +29,9 @@ const Products = () => {
   const [sort, setSort] = useState("");
   const { category } = useParams();
   const fetchProductsByCategory = async (queries) => {
-    /* queries */
-    const response = await apiGetProducts({
-      ...queries,
-      category,
-    }); /* queries */
+    if (category && category !== "products") queries.category = category;
+
+    const response = await apiGetProducts(queries);
     if (response.success) setProducts(response);
     // console.log(response.productDatas);
     // console.log(response);

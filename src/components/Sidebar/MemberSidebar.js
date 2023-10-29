@@ -6,6 +6,7 @@ import clsx from "clsx";
 import { FiChevronDown, FiChevronRight } from "react-icons/fi";
 import path from "ultils/path";
 import { useSelector } from "react-redux";
+import { BiLogOut } from "react-icons/bi";
 const activedStyle =
   "px-4 py-2 rounded-l-xl flex items-center gap-2 text-main bg-gray-100 font-semibold  ";
 const notActivedStyle =
@@ -84,6 +85,10 @@ const MemberSidebar = () => {
             )}
           </Fragment>
         ))}
+        <NavLink className={clsx(notActivedStyle)} to={"/"}>
+          <BiLogOut size={25}></BiLogOut>
+          Home
+        </NavLink>
       </div>
     </div>
   );

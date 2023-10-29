@@ -5,7 +5,7 @@ import Trending from "assets/Treding.png";
 import { renderStarFromNumber } from "ultils/helpers";
 import { SelectOption } from "..";
 import icons from "ultils/icons";
-import { Link } from "react-router-dom";
+import { Link, createSearchParams } from "react-router-dom";
 import path from "ultils/path";
 import withBase from "hocs/withBase";
 import { showModal } from "store/app/appSlice";
@@ -18,7 +18,14 @@ import Swal from "sweetalert2";
 import { BsFillCartCheckFill } from "react-icons/bs";
 
 const { AiFillEye, BsCartPlusFill, BsSuitHeartFill } = icons;
-const Product = ({ productDatas, isNew, normal, navigate, dispatch }) => {
+const Product = ({
+  productDatas,
+  isNew,
+  normal,
+  navigate,
+  dispatch,
+  location,
+}) => {
   const [isShowOption, setIsShowOption] = useState(false);
   const { current } = useSelector((state) => state.user);
   const handleClickOption = async (e, flag) => {
@@ -33,14 +40,25 @@ const Product = ({ productDatas, isNew, normal, navigate, dispatch }) => {
           cancelButtonText: "Not now!",
           showCancelButton: true,
         }).then((rs) => {
-          if (rs.isConfirmed) navigate(`/${path.LOGIN}`);
+          if (rs.isConfirmed)
+            navigate({
+              pathname: `/${path.LOGIN}`,
+              search: createSearchParams({
+                redirect: location.pathname,
+              }).toString(),
+            });
         });
       const response = await apiUpdateCart({
-        pid: productDatas._id,
+        pid: productDatas?._id,
         color: productDatas?.color,
-        size: productDatas.size[0],
+        size: productDatas?.size[0],
+        quantity: 1,
+        price: productDatas?.price,
+        thumbnail: productDatas?.thumb,
+        title: productDatas?.title,
       });
       if (response.success) {
+        console.log("response: ", response);
         toast.success(response.mes);
         dispatch(getCurrent());
       } else toast.error(response.mes);

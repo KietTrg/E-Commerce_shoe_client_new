@@ -1,6 +1,9 @@
 export { default as Header } from "./Headers/Header";
 export { default as Sidebar } from "./Sidebar/Sidebar";
 export { default as Banner } from "./Common/Banner";
+export { default as Paypal } from "./Common/Paypal";
+export { default as BarChart } from "./Common/BarChart";
+export { default as Congrat } from "./Common/Congrat";
 export { default as Navigation } from "./Navigation/Navigation";
 export { default as BestSeller } from "./Products/BestSeller";
 export { default as Product } from "./Products/Product";
@@ -13,6 +16,7 @@ export { default as CustomSlider } from "./Common/CustomSlider";
 export { default as TopHeader } from "./Headers/TopHeader";
 export { default as Footer } from "./Footer/Footer";
 export { default as InputField } from "./Inputs/InputField";
+export { default as CustomSelect } from "./Inputs/CustomSelect";
 export { default as Button } from "./Buttons/Button";
 export { default as Breadcrumb } from "./Common/Breadcrumb";
 export { default as SelectQuantity } from "./Common/SelectQuantity";

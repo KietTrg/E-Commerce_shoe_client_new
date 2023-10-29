@@ -5,10 +5,17 @@ import { formatMoney } from "ultils/helpers";
 import { updateCart } from "store/user/userSlice";
 import withBase from "hocs/withBase";
 
-const OrderItem = ({ el, defaultQuantity = 1, dispatch }) => {
-  const { current } = useSelector((state) => state.user);
-
-  const [quantity, setQuantity] = useState(() => defaultQuantity);
+const OrderItem = ({
+  dispatch,
+  color,
+  dfQuantity = 1,
+  title,
+  price,
+  thumbnail,
+  pid,
+  size,
+}) => {
+  const [quantity, setQuantity] = useState(() => dfQuantity);
   const handleQuantity = (number) => {
     if (+number > 1) setQuantity(number);
   };
@@ -18,21 +25,21 @@ const OrderItem = ({ el, defaultQuantity = 1, dispatch }) => {
     if (flag === "plus") setQuantity((prev) => +prev + 1);
   };
   useEffect(() => {
-    dispatch(updateCart({ pid: el.product?._id, quantity, color: el?.color }));
+    dispatch(updateCart({ pid, quantity, color }));
   }, [quantity]);
   return (
     <div className="border-b w-main grid mx-auto py-3 font-bold grid-cols-10">
       <span className="text-center  col-span-6 w-full">
         <div className="flex gap-2 px-4 py-3">
           <img
-            src={el.thumbnail}
+            src={thumbnail}
             className=" w-28 h-28 object-cover"
             alt="thumb"
           ></img>
           <div className="flex flex-col  items-start gap-1">
-            <span className="text-sm text-main">{el.title}</span>
-            <span className="text-[10px] font-main">{el.color}</span>
-            <span className="text-[10px] font-main">{el.size}</span>
+            <span className="text-sm text-main">{title}</span>
+            <span className="text-[10px] font-main">{color}</span>
+            <span className="text-[10px] font-main">{size}</span>
           </div>
         </div>
       </span>
@@ -47,7 +54,7 @@ const OrderItem = ({ el, defaultQuantity = 1, dispatch }) => {
       </span>
       <span className="text-center justify-center h-full flex items-center col-span-3 w-full">
         <span className="text-lg">{`${formatMoney(
-          el?.price * quantity
+          price * quantity
         )} vnd`}</span>
       </span>
     </div>

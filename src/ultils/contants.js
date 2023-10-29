@@ -1,5 +1,7 @@
 import path from "./path";
 import icons from "./icons";
+import { BsFillCartCheckFill } from "react-icons/bs";
+import { MdFavorite } from "react-icons/md";
 // import { VoteOption } from "../components";
 export const navigation = [
   {
@@ -190,8 +192,16 @@ export const adminSidebar = [
         path: `/${path.ADMIN}/${path.CREATE_PRODUCTS}`,
       },
       {
+        text: "Create category",
+        path: `/${path.ADMIN}/${path.CREATE_CATEGORYS}`,
+      },
+      {
         text: "Manage products",
         path: `/${path.ADMIN}/${path.MANAGE_PRODUCTS}`,
+      },
+      {
+        text: "Manage category",
+        path: `/${path.ADMIN}/${path.MANAGE_CATEGORYS}`,
       },
     ],
   },
@@ -240,7 +250,7 @@ export const memberSidebar = [
     type: "SINGLE",
     text: "My cart",
     path: `/${path.MEMBER}/${path.MY_CART}`,
-    icon: <MdGroups2 size={25}></MdGroups2>,
+    icon: <BsFillCartCheckFill size={25}></BsFillCartCheckFill>,
   },
 
   {
@@ -248,13 +258,27 @@ export const memberSidebar = [
     type: "SINGLE",
     text: "Buy histories",
     path: `/${path.MEMBER}/${path.HISTORY}`,
-    icon: <MdGroups2 size={25}></MdGroups2>,
+    icon: (
+      <HiOutlineClipboardDocumentList
+        size={25}
+      ></HiOutlineClipboardDocumentList>
+    ),
   },
   {
     id: 4,
     type: "SINGLE",
     text: "Wish list",
     path: `/${path.MEMBER}/${path.WISHLIST}`,
-    icon: <MdGroups2 size={25}></MdGroups2>,
+    icon: <MdFavorite size={25}></MdFavorite>,
+  },
+];
+export const statusOders = [
+  {
+    label: "Cancelled",
+    value: "Cancelled",
+  },
+  {
+    label: "Successed",
+    value: "Successed",
   },
 ];

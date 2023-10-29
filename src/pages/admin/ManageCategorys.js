@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useState } from "react";
 import { CustomizeVarriants, InputForm, Pagination } from "components";
 import { useForm } from "react-hook-form";
-import { apiGetProducts, apiDeleteProduct } from "apis/product";
+import { apiGetCategory, apiDeleteCategory } from "apis/category";
 import moment from "moment";
 import UpdateProduct from "pages/admin/UpdateProduct";
 import {
@@ -16,8 +16,7 @@ import { toast } from "react-toastify";
 import { TbEdit } from "react-icons/tb";
 import { RiDeleteBin2Fill } from "react-icons/ri";
 import { BiCustomize } from "react-icons/bi";
-
-const ManageProducts = () => {
+const ManageCategorys = () => {
   const navigate = useNavigate();
   const location = useLocation();
   const [params] = useSearchParams();
@@ -40,14 +39,15 @@ const ManageProducts = () => {
   //   console.log(data);
   // };
   const fetchProducts = async (params) => {
-    const response = await apiGetProducts({
+    const response = await apiGetCategory({
       ...params,
       limit: process.env.REACT_APP_LIMIT,
     });
     if (response.success) {
       setCounts(response.counts);
+      console.log("response.counts: ", response.counts);
 
-      setProducts(response.productDatas);
+      setProducts(response.productCategories);
     }
   };
   const queryDebounce = useDebounce(watch("q"), 800);
@@ -76,7 +76,7 @@ const ManageProducts = () => {
       showCancelButton: true,
     }).then(async (result) => {
       if (result.isConfirmed) {
-        const response = await apiDeleteProduct(pid);
+        const response = await apiDeleteCategory(pid);
         if (response.success) {
           render();
           toast.success(response.mes);
@@ -131,13 +131,7 @@ const ManageProducts = () => {
               <th className="text-center py-2">Thumb</th>
               <th className="text-center py-2">Title</th>
               <th className="text-center py-2">Brand</th>
-              <th className="text-center py-2">Category</th>
-              <th className="text-center py-2">Price</th>
-              <th className="text-center py-2">Quantity</th>
-              <th className="text-center py-2">Sold</th>
-              <th className="text-center py-2">Color</th>
-              <th className="text-center py-2">Size</th>
-              <th className="text-center py-2">Ratings</th>
+
               <th className="text-center py-2">Varriants</th>
               <th className="text-center py-2 ">updatedAt</th>
               <th className="text-center py-2 rounded-r-lg">Action</th>
@@ -153,20 +147,14 @@ const ManageProducts = () => {
                 </td>
                 <td className=" text-center py-2">
                   <img
-                    src={el.thumb}
+                    src={el.image}
                     alt="thumb"
                     className="w-12 h-12 object-cover"
                   ></img>
                 </td>
                 <td className="text-center py-2">{el.title}</td>
-                <td className="text-center py-2">{el.brand}</td>
-                <td className="text-center py-2">{el.category}</td>
-                <td className="text-center py-2">{el.price}</td>
-                <td className="text-center py-2">{el.quantity}</td>
-                <td className="text-center py-2">{el.sold}</td>
-                <td className="text-center py-2">{el.color}</td>
-                <td className="text-center py-2">{el.size}</td>
-                <td className="text-center py-2">{el.totalRatings}</td>
+                <td className="text-center py-2 text">{el.brand.join(" ")}</td>
+
                 <td className="text-center py-2">
                   {el.varriants?.length || 0}
                 </td>
@@ -207,4 +195,4 @@ const ManageProducts = () => {
   );
 };
 
-export default ManageProducts;
+export default ManageCategorys;

@@ -7,8 +7,10 @@ import avatar from "assets/avtDefault.png";
 import { apiUpdateCurrent } from "apis";
 import { getCurrent } from "store/user/asyncActions";
 import { toast } from "react-toastify";
+import withBase from "hocs/withBase";
+import { useSearchParams } from "react-router-dom";
 
-const Personal = () => {
+const Personal = ({ navigate }) => {
   const {
     register,
     formState: { errors, isDirty },
@@ -17,6 +19,7 @@ const Personal = () => {
   } = useForm();
   const { current } = useSelector((state) => state.user);
   const dispatch = useDispatch();
+  const [searhParams] = useSearchParams();
   useEffect(() => {
     reset({
       firstname: current?.firstname,
@@ -24,6 +27,7 @@ const Personal = () => {
       mobile: current?.mobile,
       email: current?.email,
       avatar: current?.avatar,
+      address: current?.address,
     });
   }, [current]);
   const handleUpdateInfor = async (data) => {
@@ -35,11 +39,12 @@ const Personal = () => {
     if (response.success) {
       dispatch(getCurrent());
       toast.success(response.mes);
+      if (searhParams.get("redirect")) navigate(searhParams.get("redirect"));
     } else toast.error(response.mes);
   };
   return (
     <div className="w-full relative px-4">
-      <header className="text-3xl font-semibold py-4 border-b-2 border-main">
+      <header className="text-main text-3xl font-semibold py-4 border-b-2 border-main">
         Personal
       </header>
       <form
@@ -91,6 +96,15 @@ const Personal = () => {
             },
           }}
         />
+        <InputForm
+          label="Address"
+          register={register}
+          errors={errors}
+          id="address"
+          validate={{
+            required: "Need fill this field",
+          }}
+        />
         <div className="flex items-center gap-2">
           <span className="font-medium">Account status:</span>
           <span>{current?.isBlocked ? "Blocked" : "Actived"}</span>
@@ -133,4 +147,4 @@ const Personal = () => {
   );
 };
 
-export default Personal;
+export default withBase(Personal);

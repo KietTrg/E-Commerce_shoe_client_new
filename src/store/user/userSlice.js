@@ -30,12 +30,11 @@ export const userSlice = createSlice({
     updateCart: (state, actions) => {
       const { pid, color, quantity } = actions.payload;
       const updatingCart = JSON.parse(JSON.stringify(state.currentCart));
-      const updatedCart = updatingCart.map((el) => {
+      state.currentCart = updatingCart.map((el) => {
         if (el.color === color && el?.product?._id === pid) {
           return { ...el, quantity };
         } else return el;
       });
-      state.currentCart = updatedCart;
     },
   },
   extraReducers: (builder) => {

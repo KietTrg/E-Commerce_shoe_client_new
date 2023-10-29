@@ -1,4 +1,5 @@
 import React, { memo } from "react";
+import { useSelector } from "react-redux";
 
 const SelectQuantity = ({ quantity, handleQuantity, handleChangeQuantity }) => {
   return (

@@ -4,4 +4,6 @@ export { default as ManageOrder } from "./ManageOrder";
 export { default as ManageProducts } from "./ManageProducts";
 export { default as ManageUser } from "./ManageUser";
 export { default as CreateProducts } from "./CreateProducts";
+export { default as CreateCategorys } from "./CreateCategorys";
+export { default as ManageCategorys } from "./ManageCategorys";
 export { default as UpdateProduct } from "./UpdateProduct";

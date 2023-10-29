@@ -7,6 +7,9 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "store/user/userSlice";
 import withBase from "hocs/withBase";
 import { showCart } from "store/app/appSlice";
+import { BiLogOut } from "react-icons/bi";
+import { BsFillPersonLinesFill } from "react-icons/bs";
+import { GrUserAdmin } from "react-icons/gr";
 const { BsTelephoneFill, MdEmail, BiSolidShoppingBagAlt, BiSolidUser } = icons;
 const Header = ({ dispatch }) => {
   const { current } = useSelector((state) => state.user);
@@ -61,28 +64,22 @@ const Header = ({ dispatch }) => {
               {isShowOption && (
                 <div
                   onClick={(e) => e.stopPropagation()}
-                  className=" absolute flex flex-col top-full left-[16px] bg-gray-100 min-w-[150px] py-2"
+                  className=" rounded-lg absolute flex flex-col top-full left-[25px] bg-gray-100 min-w-[120px] "
                 >
-                  <Link
-                    className="p-2 hover:bg-sky-300 w-full"
-                    to={`/${path.MEMBER}/${path.PERSONAL}`}
-                  >
-                    Pesonal
-                  </Link>
+                  <div className="p-2 hover:bg-[#9AD0EC] w-full flex justify-between items-center">
+                    <Link to={`/${path.MEMBER}/${path.PERSONAL}`}>Pesonal</Link>
+                    <BsFillPersonLinesFill></BsFillPersonLinesFill>
+                  </div>
                   {current.role === "1" && (
-                    <Link
-                      className="p-2 hover:bg-sky-300 w-full"
-                      to={`/${path.ADMIN}/${path.DASHBOARD}`}
-                    >
-                      Admin
-                    </Link>
+                    <div className="p-2 hover:bg-[#9AD0EC] w-full flex justify-between items-center">
+                      <Link to={`/${path.ADMIN}/${path.DASHBOARD}`}>Admin</Link>
+                      <GrUserAdmin></GrUserAdmin>
+                    </div>
                   )}
-                  <span
-                    onClick={() => dispatch(logout())}
-                    className="p-2 hover:bg-sky-300 w-full"
-                  >
-                    Logout
-                  </span>
+                  <div className="flex justify-between items-center p-2 hover:bg-[#9AD0EC] w-full">
+                    <span onClick={() => dispatch(logout())}>Logout</span>
+                    <BiLogOut></BiLogOut>
+                  </div>
                 </div>
               )}
             </div>

@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { createSearchParams, useParams } from "react-router-dom";
 import { apiGetProduct, apiGetProducts, apiUpdateCart } from "apis";
 import {
@@ -30,6 +30,7 @@ const settings = {
   slidesToScroll: 1,
 };
 const DetailProduct = ({ isQuickView, data, location, dispatch, navigate }) => {
+  const titleRef = useRef();
   const params = useParams();
   const { current } = useSelector((state) => state.user);
   const [product, setProduct] = useState(null);
@@ -64,7 +65,7 @@ const DetailProduct = ({ isQuickView, data, location, dispatch, navigate }) => {
       setProduct(response.productData);
       setCurrentImage(response.productData?.thumb);
     }
-    // console.log(response.productData);
+    console.log(response.productData);
   };
   useEffect(() => {
     if (varriant) {
@@ -86,7 +87,7 @@ const DetailProduct = ({ isQuickView, data, location, dispatch, navigate }) => {
         thumb: product?.thumb,
       });
     }
-  }, [varriant]);
+  }, [varriant, product]);
   const fetchProducts = async () => {
     const response = await apiGetProducts({ category });
     if (response.success) setRelatedProducts(response.productDatas);
@@ -96,7 +97,8 @@ const DetailProduct = ({ isQuickView, data, location, dispatch, navigate }) => {
       fetchProductData();
       fetchProducts();
     }
-    window.scrollTo(0, 0);
+    // window.scrollTo(0, 0);
+    titleRef?.current?.scrollIntoView({ block: "start" });
   }, [pid]);
   useEffect(() => {
     if (pid) fetchProductData();
@@ -112,9 +114,15 @@ const DetailProduct = ({ isQuickView, data, location, dispatch, navigate }) => {
     },
     [quantity]
   );
+
   const handleChangeQuantity = useCallback(
     (flag) => {
       if (flag === "minus" && quantity === 1) return;
+      if (flag === "plus" && quantity === product?.quantity) {
+        Swal.fire("Not enough products", "", "info");
+        return;
+      }
+
       if (flag === "minus") setQuantity((prev) => +prev - 1);
       if (flag === "plus") setQuantity((prev) => +prev + 1);
     },
@@ -144,24 +152,26 @@ const DetailProduct = ({ isQuickView, data, location, dispatch, navigate }) => {
       });
     const response = await apiUpdateCart({
       pid: pid,
-      color: currentProduct?.color || product?.color,
-      size: currentProduct?.size[0] || product?.size[0],
+      color: product?.color || currentProduct?.color,
+      size: product?.size[0] || currentProduct?.size[0],
       quantity: quantity,
-      price: currentProduct?.price || product?.price,
-      thumbnail: currentProduct?.thumb || product?.thumb,
-      title: currentProduct?.title || product?.title,
+      price: product?.price || currentProduct?.price,
+      thumbnail: product?.thumb || currentProduct?.thumb,
+      title: product?.title || currentProduct?.title,
     });
     if (response.success) {
-      console.log("response: ", response);
       toast.success(response.mes);
       dispatch(getCurrent());
     } else toast.error(response.mes);
   };
-  // console.log(pid, title);
+
   return (
     <div className={clsx("w-full")}>
       {!isQuickView && (
-        <div className="h-[81px] flex justify-center items-center bg-gray-100">
+        <div
+          ref={titleRef}
+          className="h-[81px] flex justify-center items-center bg-gray-100"
+        >
           <div className="w-main">
             <h3 className="font-semibold mb-2">{product?.title}</h3>
             <Breadcrumb title={product?.title} category={category}></Breadcrumb>
@@ -173,7 +183,7 @@ const DetailProduct = ({ isQuickView, data, location, dispatch, navigate }) => {
         className={clsx(
           " bg-white m-auto mt-4 flex",
           isQuickView
-            ? "max-w-[900px] gap-16 p-8 max-h-[80vh] overflow-y-auto"
+            ? "max-w-full gap-16 p-8 max-h-[80vh] overflow-y-auto"
             : "w-main"
         )}
       >
@@ -306,7 +316,9 @@ const DetailProduct = ({ isQuickView, data, location, dispatch, navigate }) => {
                   ></img>
                   <span className="flex flex-col">
                     <span>{el?.color}</span>
-                    <span className="text-sm">{el?.price}</span>
+                    <span className="text-sm">{`${formatMoney(
+                      formatPrice(el?.price)
+                    )} VND`}</span>
                   </span>
                 </div>
               ))}
