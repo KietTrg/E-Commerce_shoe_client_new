@@ -132,7 +132,7 @@ const ManageCategorys = () => {
               <th className="text-center py-2">Title</th>
               <th className="text-center py-2">Brand</th>
 
-              <th className="text-center py-2">Varriants</th>
+              <th className="text-center py-2">Products</th>
               <th className="text-center py-2 ">updatedAt</th>
               <th className="text-center py-2 rounded-r-lg">Action</th>
             </tr>

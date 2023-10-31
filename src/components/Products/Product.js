@@ -10,12 +10,13 @@ import path from "ultils/path";
 import withBase from "hocs/withBase";
 import { showModal } from "store/app/appSlice";
 import { DetailProduct } from "pages/public";
-import { apiUpdateCart } from "apis";
+import { apiUpdateCart, apiUpdateWishlist } from "apis";
 import { toast } from "react-toastify";
 import { getCurrent } from "store/user/asyncActions";
 import { useSelector } from "react-redux";
 import Swal from "sweetalert2";
 import { BsFillCartCheckFill } from "react-icons/bs";
+import clsx from "clsx";
 
 const { AiFillEye, BsCartPlusFill, BsSuitHeartFill } = icons;
 const Product = ({
@@ -25,6 +26,8 @@ const Product = ({
   navigate,
   dispatch,
   location,
+  pid,
+  className,
 }) => {
   const [isShowOption, setIsShowOption] = useState(false);
   const { current } = useSelector((state) => state.user);
@@ -64,7 +67,15 @@ const Product = ({
       } else toast.error(response.mes);
     }
 
-    if (flag === "WISHLIST") console.log("Wishlist");
+    if (flag === "WISHLIST") {
+      const response = await apiUpdateWishlist(pid);
+      console.log("pid: ", pid);
+      console.log("response: ", response);
+      if (response.success) {
+        dispatch(getCurrent());
+        toast.success(response.mes);
+      } else toast.error(response.mes);
+    }
     if (flag === "QUICK_VIEW") {
       dispatch(
         showModal({
@@ -83,7 +94,7 @@ const Product = ({
     }
   };
   return (
-    <div className=" w-full text-base  px-[10px]">
+    <div className={clsx(" w-full text-base  px-[10px]", className)}>
       <div
         className="w-full mb-2 shadow-lg rounded-xl  p-[15px] flex flex-col items-start"
         onClick={(e) =>
@@ -129,7 +140,17 @@ const Product = ({
                 title="Add to wishlist"
                 onClick={(e) => handleClickOption(e, "WISHLIST")}
               >
-                <SelectOption icons={<BsSuitHeartFill />} />
+                <SelectOption
+                  icons={
+                    <BsSuitHeartFill
+                      color={
+                        current.wishlist.some((el) => el === pid)
+                          ? "pink"
+                          : "black"
+                      }
+                    />
+                  }
+                />
               </span>
             </div>
           )}

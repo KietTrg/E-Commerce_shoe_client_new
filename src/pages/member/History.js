@@ -49,6 +49,7 @@ const History = ({ navigate, location }) => {
       search: createSearchParams({ status: value }).toString(),
     });
   };
+  console.log(orders);
   return (
     <div className="w-full relative px-4">
       <header className="text-3xl font-semibold py-4 border-b-2 border-main">
@@ -75,46 +76,58 @@ const History = ({ navigate, location }) => {
           </div>
         </form>
       </div>
-      <div className="w-full px-4 ">
-        <table className="table-auto w-full ">
-          <thead>
-            <tr className="bg-blue-100 text-black  ">
-              <th className="text-center py-2 rounded-l-lg">#</th>
-              <th className="text-center py-2">Product</th>
-              <th className="text-center py-2">Total</th>
-              <th className="text-center py-2">Status</th>
-              <th className="text-center py-2 ">created dAt</th>
-              <th className="text-center py-2 rounded-r-lg">Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            {orders?.map((el, index) => (
-              <tr className="border-b border-main " key={el._id}>
-                <td className="text-center py-2">
-                  {+params.get("page") - 1 > 1
-                    ? +params.get("page") - 1
-                    : 0 * process.env.REACT_APP_LIMIT + index + 1}
-                </td>
-                <td className=" text-center py-2">
-                  <span className="flex flex-col gap-2 ">
-                    {el.products?.map((el) => (
-                      <span key={el._id}>{el.title}</span>
-                    ))}
-                  </span>
-                </td>
-                <td className="text-center py-2">
-                  {formatMoney(el.total * 23500) + " VND"}
-                </td>
-                <td className="text-center py-2">{el.status}</td>
-                <td className="text-center py-2">
-                  {moment(el.createdAt).format("DD/MM/YYYY")}
-                </td>
-                {/*                
+      {/* <div className="w-full px-4 "> */}
+      <table className="table-auto w-full ">
+        <thead>
+          <tr className="bg-blue-100 text-black  ">
+            <th className="text-center py-2 rounded-l-lg">#</th>
+            <th className="text-center py-2">Product</th>
+            <th className="text-center py-2">Total</th>
+            <th className="text-center py-2">Status</th>
+            <th className="text-center py-2 ">created dAt</th>
+          </tr>
+        </thead>
+        <tbody>
+          {orders?.map((el, index) => (
+            <tr className="border-b border-main " key={el._id}>
+              <td className="text-center p-2">
+                {+params.get("page") - 1 > 1
+                  ? +params.get("page") - 1
+                  : 0 * process.env.REACT_APP_LIMIT + index + 1}
+              </td>
+              <td className="max-w-[900px] text-center py-2">
+                <span className="grid grid-cols-3 gap-4">
+                  {el.products?.map((el) => (
+                    <span className="flex items-center gap-2" key={el._id}>
+                      <img
+                        src={el?.thumbnail}
+                        alt="thumb"
+                        className="w-8 h-8 rounded-md object-cover"
+                      ></img>
+                      <span className="flex flex-col">
+                        <span className="text-sm">{el.title}</span>
+                        <span className="flex items-center text-xs gap-2">
+                          <span>Quantity:</span>
+                          <span className="text-main">{el?.quantity}</span>
+                        </span>
+                      </span>
+                    </span>
+                  ))}
+                </span>
+              </td>
+              <td className="text-center py-2">
+                {formatMoney(el.total * 23500) + " VND"}
+              </td>
+              <td className="text-center py-2">{el.status}</td>
+              <td className="text-center py-2">
+                {moment(el.createdAt).format("DD/MM/YYYY")}
+              </td>
+              {/*                
                 <td className="text-center py-2">
                   {moment(el.updatedAt).format("DD/MM/YYYY")}
                 </td> */}
-                <td>
-                  {/* <div className="flex items-center justify-center">
+              <td>
+                {/* <div className="flex items-center justify-center">
                     <span
                       onClick={() => seteditProduct(el)}
                       className="text-main hover:text-orange-600 cursor-pointer px-1 "
@@ -134,12 +147,12 @@ const History = ({ navigate, location }) => {
                       <BiCustomize size={20}></BiCustomize>
                     </span>
                   </div> */}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+      {/* </div> */}
       <div className="w-full flex justify-end my-8 px-4">
         <Pagination totalCount={counts}></Pagination>
       </div>

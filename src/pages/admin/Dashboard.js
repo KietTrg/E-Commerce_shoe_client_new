@@ -1,17 +1,17 @@
-import { apiGetProducts, apiGetUsers } from "apis";
+import { apiGetOrders, apiGetProducts, apiGetUsers } from "apis";
 import { BarChart, Chart } from "components";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import { BiSolidBox } from "react-icons/bi";
 import { BsBoxFill } from "react-icons/bs";
 import { HiSquare3Stack3D } from "react-icons/hi2";
-import { MdGroups2 } from "react-icons/md";
+import { MdAttachMoney, MdGroups2 } from "react-icons/md";
 import { formatMoney } from "ultils/helpers";
 
 const Dashboard = () => {
   const [users, setUsers] = useState(null);
   const [products, setProducts] = useState(null);
-  const [saleProduct, setSaleProduct] = useState(0);
+  const [order, setOrder] = useState(null);
   const [dealDaily, setDealDaily] = useState(null);
   const [dataProduct, setDataProduct] = useState({
     labels: [],
@@ -76,14 +76,12 @@ const Dashboard = () => {
       });
     }
   };
-  console.log(dataProduct.labels);
+
   const fetchProducts = async (queries) => {
     const response = await apiGetProducts({
       ...queries,
       limit: 26,
     });
-    console.log("response: ", response);
-
     if (response.success) {
       setProducts(response);
     }
@@ -95,7 +93,10 @@ const Dashboard = () => {
     });
     if (response.success) setDealDaily(response.productDatas[0]);
   };
-
+  const fectOrder = async () => {
+    const response = await apiGetOrders();
+    if (response.success) setOrder(response.order);
+  };
   useEffect(() => {
     fecthSoldProducts();
   }, []);
@@ -106,6 +107,7 @@ const Dashboard = () => {
   useEffect(() => {
     fetchUsers();
     fetchProducts();
+    fectOrder();
   }, []);
   return (
     <div className="w-full ">
@@ -150,20 +152,19 @@ const Dashboard = () => {
         <div className="flex-auto w-[300px] h-[150px] px-10 flex justify-between  items-center shadow-lg rounded-2xl border">
           <div className="flex items-center justify-center">
             <div className=" bg-[#9AD0EC] w-[80px] h-[80px] rounded-full relative "></div>
-            <BiSolidBox
+            <MdAttachMoney
               color="#005f90"
               className="absolute"
               size={50}
-            ></BiSolidBox>
+            ></MdAttachMoney>
           </div>
 
           <div className="flex flex-col gap-2 items-center text-2xl">
-            <span className="font-semibold text-main">Stock Available</span>
+            <span className="font-semibold text-main">Total Sale</span>
             <span className="font-semibold text-main">
-              {products?.productDatas.reduce(
-                (sum, el) => el?.quantity + sum,
-                0
-              )}
+              {`${formatMoney(
+                order?.reduce((sum, el) => el?.total + sum, 0) * 23000
+              )} VND`}
             </span>
             <span className="font-semibold text-main"></span>
           </div>
