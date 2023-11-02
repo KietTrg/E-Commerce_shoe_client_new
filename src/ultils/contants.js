@@ -213,7 +213,7 @@ export const adminSidebar = [
 
       {
         text: "Manage category",
-        path: `/${path.ADMIN}/${path.MANAGE_PRODUCTS}`,
+        path: `/${path.ADMIN}/${path.MANAGE_CATEGORY}`,
       },
     ],
   },

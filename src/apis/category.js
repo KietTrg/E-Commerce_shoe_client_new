@@ -16,3 +16,9 @@ export const apiDeleteCategory = (pcid) =>
     url: "/productcategory/" + pcid,
     method: "delete",
   });
+export const apiUpdateCategory = (data, pcid) =>
+  axios({
+    url: "/productcategory/" + pcid,
+    method: "put",
+    data,
+  });

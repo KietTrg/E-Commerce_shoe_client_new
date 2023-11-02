@@ -21,7 +21,7 @@ import {
   CreateProducts,
   Dashboard,
   CreateCategorys,
-  // ManageCategorys,
+  ManageCategory,
 } from "pages/admin";
 import {
   MemberLayout,
@@ -81,10 +81,10 @@ function App() {
             path={path.MANAGE_PRODUCTS}
             element={<ManageProducts />}
           ></Route>
-          {/* <Route
-            path={path.MANAGE_CATEGORYS}
-            element={<ManageCategorys />}
-          ></Route> */}
+          <Route
+            path={path.MANAGE_CATEGORY}
+            element={<ManageCategory />}
+          ></Route>
           <Route path={path.MANAGE_USER} element={<ManageUser />}></Route>
           <Route
             path={path.CREATE_CATEGORYS}

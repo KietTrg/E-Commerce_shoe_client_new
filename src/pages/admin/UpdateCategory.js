@@ -1,4 +1,4 @@
-import { apiCreateCategory } from "apis";
+import { apiCreateCategory, apiUpdateCategory } from "apis";
 import { Button, InputForm } from "components";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import { getCategories } from "store/app/asyncActions";
 import { getBase64 } from "ultils/helpers";
 
-const CreateCategorys = () => {
+const UpdateCategorys = ({ editProduct, render, seteditProduct }) => {
   const {
     register,
     formState: { errors },
@@ -18,42 +18,65 @@ const CreateCategorys = () => {
   const [preview, setPreview] = useState({
     image: null,
   });
+  useEffect(() => {
+    reset({
+      title: editProduct?.title || "",
+      brand: editProduct?.brand || "",
+    });
+    setPreview({
+      image: editProduct?.image || "",
+    });
+  }, [editProduct]);
   const handlePreviewImage = async (file) => {
     const base64Image = await getBase64(file);
     setPreview((prev) => ({ ...prev, image: base64Image }));
   };
   useEffect(() => {
-    handlePreviewImage(watch("image")[0]);
+    if (watch("image") instanceof FileList && watch("image").length > 0) {
+      handlePreviewImage(watch("image")[0]);
+    }
   }, [watch("image")]);
-  const handleCreateCategory = async (data) => {
+
+  const handleUpdateCategory = async (data) => {
     const finalPayload = { ...data, ...payload };
     const formData = new FormData();
     for (let i of Object.entries(finalPayload)) formData.append(i[0], i[1]);
-    if (finalPayload.image) formData.append("image", finalPayload.image[0]);
+    if (finalPayload.image)
+      formData.append(
+        "image",
+        finalPayload?.image?.length === 0
+          ? preview.image
+          : finalPayload.image[0]
+      );
     if (finalPayload.brand) {
       // finalPayload.brand = finalPayload.brand.split(",").map((s) => s.trim());
-      const brandArray = finalPayload.brand.split(",");
+      const brandArray = finalPayload?.brand.split(",");
       for (let brand of brandArray) {
         formData.append("brand", brand);
       }
     }
-    const response = await apiCreateCategory(formData);
+    const response = await apiUpdateCategory(formData, editProduct._id);
     if (response.success) {
       toast.success(response.mes);
-      reset();
-      getCategories();
-      setPayload({
-        image: "",
-      });
+      render();
+      seteditProduct(null);
     } else toast.error(response.mes);
   };
   return (
-    <div className="w-full ">
-      <h1 className="h-[75px] flex justify-between items-center text-3xl font-bold p-4 border-b-2 border-main">
-        <span className="text-main">Create New Category</span>
-      </h1>
+    <div className="w-full  flex flex-col gap-4 relative">
+      <div className="h-[75px] w-full"></div>
+
+      <div className="p-4 border-b-2 border-main fixed bg-gray-100 flex justify-between items-center top-0 right-0 left-[257px]">
+        <h1 className=" text-main text-3xl font-bold  ">Update Category</h1>
+        <span
+          className="text-red-600 hover:underline cursor-pointer"
+          onClick={() => seteditProduct(null)}
+        >
+          Cancel
+        </span>
+      </div>
       <div className="p-4">
-        <form onSubmit={handleSubmit(handleCreateCategory)}>
+        <form onSubmit={handleSubmit(handleUpdateCategory)}>
           <InputForm
             label="Name category"
             register={register}
@@ -101,7 +124,7 @@ const CreateCategorys = () => {
             </div>
           )}
           <div className="my-6">
-            <Button type="submit">Create New Category</Button>
+            <Button type="submit">Update Category</Button>
           </div>
         </form>
       </div>
@@ -109,4 +132,4 @@ const CreateCategorys = () => {
   );
 };
 
-export default CreateCategorys;
+export default UpdateCategorys;

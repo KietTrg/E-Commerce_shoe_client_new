@@ -19,7 +19,7 @@ const path = {
   DASHBOARD: "dashboard",
   MANAGE_USER: "manage-user",
   MANAGE_PRODUCTS: "manage-products",
-  // MANAGE_CATEGORYS: "manage-categorys",
+  MANAGE_CATEGORY: "manage-category",
   MANAGE_ORDER: "manage-order",
   CREATE_PRODUCTS: "create-products",
   CREATE_CATEGORYS: "create-categorys",
