@@ -2,6 +2,8 @@ import path from "./path";
 import icons from "./icons";
 import { BsFillCartCheckFill } from "react-icons/bs";
 import { MdFavorite } from "react-icons/md";
+import { BiSolidCategoryAlt } from "react-icons/bi";
+import { AiFillDashboard } from "react-icons/ai";
 // import { VoteOption } from "../components";
 export const navigation = [
   {
@@ -172,7 +174,7 @@ export const adminSidebar = [
     type: "SINGLE",
     text: "Dashboard",
     path: `/${path.ADMIN}/${path.DASHBOARD}`,
-    icon: <MdDashboard size={25}></MdDashboard>,
+    icon: <AiFillDashboard size={25}></AiFillDashboard>,
   },
   {
     id: 2,
@@ -191,22 +193,32 @@ export const adminSidebar = [
         text: "Create product",
         path: `/${path.ADMIN}/${path.CREATE_PRODUCTS}`,
       },
-      {
-        text: "Create category",
-        path: `/${path.ADMIN}/${path.CREATE_CATEGORYS}`,
-      },
+
       {
         text: "Manage products",
         path: `/${path.ADMIN}/${path.MANAGE_PRODUCTS}`,
-      },
-      {
-        text: "Manage category",
-        path: `/${path.ADMIN}/${path.MANAGE_CATEGORYS}`,
       },
     ],
   },
   {
     id: 4,
+    type: "PARENT",
+    text: "Manage category",
+    icon: <BiSolidCategoryAlt size={25}></BiSolidCategoryAlt>,
+    submenu: [
+      {
+        text: "Create category",
+        path: `/${path.ADMIN}/${path.CREATE_CATEGORYS}`,
+      },
+
+      {
+        text: "Manage category",
+        path: `/${path.ADMIN}/${path.MANAGE_PRODUCTS}`,
+      },
+    ],
+  },
+  {
+    id: 5,
     type: "SINGLE",
     text: "Manage order",
     path: `/${path.ADMIN}/${path.MANAGE_ORDER}`,

@@ -21,7 +21,7 @@ import {
   CreateProducts,
   Dashboard,
   CreateCategorys,
-  ManageCategorys,
+  // ManageCategorys,
 } from "pages/admin";
 import {
   MemberLayout,
@@ -38,7 +38,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { Cart, Modal } from "./components";
 import { showCart } from "store/app/appSlice";
-import { getNewCategorys } from "store/categorys/asyncActions";
+// import { getNewCategorys } from "store/categorys/asyncActions";
 
 function App() {
   const dispatch = useDispatch();
@@ -81,10 +81,10 @@ function App() {
             path={path.MANAGE_PRODUCTS}
             element={<ManageProducts />}
           ></Route>
-          <Route
+          {/* <Route
             path={path.MANAGE_CATEGORYS}
             element={<ManageCategorys />}
-          ></Route>
+          ></Route> */}
           <Route path={path.MANAGE_USER} element={<ManageUser />}></Route>
           <Route
             path={path.CREATE_CATEGORYS}

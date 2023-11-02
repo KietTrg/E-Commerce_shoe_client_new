@@ -1,8 +1,21 @@
 import React, { memo } from "react";
 import { renderStarFromNumber, formatMoney } from "../../ultils/helpers";
-const ProductCard = ({ price, totalRatings, title, image }) => {
+import withBase from "hocs/withBase";
+import path from "ultils/path";
+const ProductCard = ({
+  price,
+  totalRatings,
+  title,
+  image,
+  pid,
+  navigate,
+  category,
+}) => {
   return (
-    <div className="w-1/3  flex-auto mb-[20px]  px-[10px]">
+    <div
+      className="w-1/3  flex-auto mb-[20px] cursor-pointer px-[10px]"
+      onClick={(e) => navigate(`/${category?.toLowerCase()}/${pid}/${title}`)}
+    >
       <div className="flex shadow-xl rounded-lg w-full">
         <img
           src={image}
@@ -25,4 +38,4 @@ const ProductCard = ({ price, totalRatings, title, image }) => {
   );
 };
 
-export default memo(ProductCard);
+export default withBase(memo(ProductCard));
