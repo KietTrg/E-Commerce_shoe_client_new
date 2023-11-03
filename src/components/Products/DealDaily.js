@@ -3,9 +3,10 @@ import icons from "../../ultils/icons";
 import { apiGetProducts } from "../../apis/product";
 import { renderStarFromNumber, formatMoney } from "../../ultils/helpers";
 import { Countdown } from "..";
+import withBase from "hocs/withBase";
 const { AiFillStar, BiMenu } = icons;
 let idInterval;
-const DealDaily = () => {
+const DealDaily = ({ navigate }) => {
   const [dealDaily, setDealDaily] = useState(null);
   const [hours, setHours] = useState(0);
   const [minutes, setMinutes] = useState(0);
@@ -103,6 +104,13 @@ const DealDaily = () => {
           <Countdown unit={"Seconds"} number={seconds}></Countdown>
         </div>
         <button
+          onClick={(e) =>
+            navigate(
+              `/${dealDaily?.category?.toLowerCase()}/${dealDaily?._id}/${
+                dealDaily?.title
+              }`
+            )
+          }
           type="button"
           className="py-2 flex gap-2 items-center justify-center w-full bg-main hover:bg-gray-800 text-white font-medium"
         >
@@ -115,4 +123,4 @@ const DealDaily = () => {
   ///new
 };
 
-export default memo(DealDaily);
+export default withBase(memo(DealDaily));

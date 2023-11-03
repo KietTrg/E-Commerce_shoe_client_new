@@ -7,6 +7,7 @@ import { createSearchParams, useSearchParams } from "react-router-dom";
 import { formatMoney } from "ultils/helpers";
 import { statusOders } from "ultils/contants";
 import withBase from "hocs/withBase";
+import clsx from "clsx";
 
 const History = ({ navigate, location }) => {
   const [orders, setOrders] = useState(null);
@@ -52,12 +53,12 @@ const History = ({ navigate, location }) => {
   console.log(orders);
   return (
     <div className="w-full relative px-4">
-      <header className="text-3xl font-semibold py-4 border-b-2 border-main">
+      <header className="text-main text-3xl font-semibold py-4 border-b-2 border-main">
         History
       </header>
       <div className="flex justify-end items-center px-4 ">
-        <form className="w-[45%] grid grid-cols-2 gap-4-">
-          <div className=" col-span-1">
+        <form className="w-[30%] my-4 gap-4-">
+          {/* <div className=" col-span-1">
             <InputForm
               id="q"
               register={register}
@@ -65,8 +66,8 @@ const History = ({ navigate, location }) => {
               fullWidth
               placeholder="Search orders by status..."
             />
-          </div>
-          <div className="col-span-1 ">
+          </div> */}
+          <div>
             <CustomSelect
               options={statusOders}
               value={status}
@@ -79,12 +80,12 @@ const History = ({ navigate, location }) => {
       {/* <div className="w-full px-4 "> */}
       <table className="table-auto w-full ">
         <thead>
-          <tr className="bg-blue-100 text-black  ">
+          <tr className="bg-[#9AD0EC] text-black  ">
             <th className="text-center py-2 rounded-l-lg">#</th>
             <th className="text-center py-2">Product</th>
             <th className="text-center py-2">Total</th>
             <th className="text-center py-2">Status</th>
-            <th className="text-center py-2 ">created dAt</th>
+            <th className="text-center py-2 rounded-r-lg ">created dAt</th>
           </tr>
         </thead>
         <tbody>
@@ -95,8 +96,8 @@ const History = ({ navigate, location }) => {
                   ? +params.get("page") - 1
                   : 0 * process.env.REACT_APP_LIMIT + index + 1}
               </td>
-              <td className="max-w-[900px] text-center py-2">
-                <span className="grid grid-cols-3 gap-4">
+              <td className="max-w-[300px]  pl-6 py-2">
+                <span className="grid grid-cols-2 gap-3">
                   {el.products?.map((el) => (
                     <span className="flex items-center gap-2" key={el._id}>
                       <img
@@ -118,7 +119,14 @@ const History = ({ navigate, location }) => {
               <td className="text-center py-2">
                 {formatMoney(el.total * 23500) + " VND"}
               </td>
-              <td className="text-center py-2">{el.status}</td>
+              <td
+                className={clsx(
+                  "text-center py-2",
+                  el.status === "Successed" ? "text-green-600" : "text-red-600"
+                )}
+              >
+                {el.status}
+              </td>
               <td className="text-center py-2">
                 {moment(el.createdAt).format("DD/MM/YYYY")}
               </td>
