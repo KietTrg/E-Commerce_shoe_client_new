@@ -35,6 +35,7 @@ const DetailProduct = ({ isQuickView, data, location, dispatch, navigate }) => {
   const { current } = useSelector((state) => state.user);
   const [product, setProduct] = useState(null);
   const [currentImage, setCurrentImage] = useState(null);
+  const [currentSize, setCurrentSize] = useState(null);
   const [quantity, setQuantity] = useState(1);
   const [relatedProducts, setRelatedProducts] = useState(null);
   const [update, setUpdate] = useState(false);
@@ -64,6 +65,7 @@ const DetailProduct = ({ isQuickView, data, location, dispatch, navigate }) => {
     if (response.success) {
       setProduct(response.productData);
       setCurrentImage(response.productData?.thumb);
+      setCurrentSize(response?.productData?.size);
     }
     console.log(response.productData);
   };
@@ -132,6 +134,12 @@ const DetailProduct = ({ isQuickView, data, location, dispatch, navigate }) => {
     e.stopPropagation();
     setCurrentImage(el);
   };
+
+  // const handleClickSize = (e, el) => {
+  //   // e.stopPropagation();
+  //   setCurrentSize(el);
+  // };
+  // console.log("el: ", currentSize);
   const handleAddToCart = async () => {
     if (!current)
       return Swal.fire({
@@ -161,6 +169,7 @@ const DetailProduct = ({ isQuickView, data, location, dispatch, navigate }) => {
     });
     if (response.success) {
       toast.success(response.mes);
+
       dispatch(getCurrent());
     } else toast.error(response.mes);
   };
@@ -329,7 +338,9 @@ const DetailProduct = ({ isQuickView, data, location, dispatch, navigate }) => {
               {skuSize === null &&
                 product?.size?.map((el) => (
                   <div
-                    onClick={() => setVarriant(null)}
+                    onClick={(e) => {
+                      setVarriant(null);
+                    }}
                     className={clsx(
                       "flex items-center gap-2 p-2 border cursor-pointer",
                       !varriant && "border-main"

@@ -34,14 +34,16 @@ const Header = ({ dispatch }) => {
         <div className=" flex flex-col items-center px-6 border-r">
           <span className=" flex gap-4 items-center">
             <BsTelephoneFill color="#005f90"></BsTelephoneFill>
-            <span className=" font-semibold">(+1800) 000 8808</span>
+            <span className=" font-semibold">+84 292 3831 301</span>
           </span>
-          <span>Mon-Sat 9:00AM - 8:00PM</span>
+          <span>Mon-Sat 8:00AM - 10:30PM</span>
         </div>
         <div className=" flex flex-col items-center px-6 border-r">
           <span className=" flex gap-4 items-center">
             <MdEmail color="#005f90"></MdEmail>
-            <span className=" font-semibold">SUPPORT@TADATHEMES.COM</span>
+            <span className=" uppercase font-semibold">
+              kietb2016977@student.ctu.edu.vn
+            </span>
           </span>
           <span>Online Support 24/7</span>
         </div>

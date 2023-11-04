@@ -35,18 +35,20 @@ const Footer = () => {
             <span>
               <span>Address</span>
               <span className=" opacity-70">
-                : 474 Ontario St Toronto, ON M4X 1M7 Canada
+                : 3/2 Xuân Khánh, Ninh Kiều, Cần Thơ, Việt Nam
               </span>
             </span>
             <span>
               <span>Phone</span>
               <span className=" opacity-70">
-                <a href="tel: 0704875988">: 0704875988</a>
+                <a href="tel: +842923831301">: +84 292 3831 301</a>
               </span>
             </span>
             <span>
               <span>Mail</span>
-              <span className=" opacity-70">: tadathemes@gmail.com</span>
+              <span className=" opacity-70">
+                : kietb2016977@student.ctu.edu.vn
+              </span>
             </span>
           </div>
           <div className="flex-1 flex flex-col gap-2">

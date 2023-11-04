@@ -107,7 +107,7 @@ const FAQ = () => {
                   </div>
                   <div className="flex gap-4 items-center">
                     <AiTwotonePhone size={20}></AiTwotonePhone>
-                    <span>+842923831301</span>
+                    <span>+84 292 3831 301</span>
                   </div>
                 </div>
                 <iframe

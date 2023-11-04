@@ -46,7 +46,7 @@ const Cart = ({ dispatch, navigate }) => {
               <div className="flex gap-2">
                 <img
                   src={el.thumbnail}
-                  className=" w-20 h-20 object-cover"
+                  className=" rounded-lg w-20 h-20 object-cover"
                   alt="thumb"
                 ></img>
                 <div className="flex flex-col gap-1">

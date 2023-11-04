@@ -47,7 +47,7 @@ const Services = () => {
           </span>
         </div>
       </div>
-      <div className="h-[300px]"></div>
+      <div className="h-[200px]"></div>
     </div>
   );
 };
