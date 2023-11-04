@@ -104,6 +104,16 @@ const UpdateProduct = ({ editProduct, render, seteditProduct }) => {
             : finalPayload.images;
         for (let image of images) formData.append("images", image);
       }
+      if (finalPayload.size) {
+        // finalPayload.size = finalPayload.size.split(",").map((s) => s.trim());
+        const sizeArray = finalPayload.size.split(",");
+        for (let size of sizeArray) {
+          formData.append("size", size);
+
+          console.log("size: ", size);
+        }
+        console.log("finalPayload.size: ", sizeArray);
+      }
       dispatch(showModal({ isShowModal: true, modalChildren: <Loading /> }));
       const response = await apiUpdateProduct(formData, editProduct._id);
       dispatch(showModal({ isShowModal: false, modalChildren: null }));

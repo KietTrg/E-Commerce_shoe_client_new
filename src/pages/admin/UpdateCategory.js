@@ -39,6 +39,7 @@ const UpdateCategorys = ({ editProduct, render, seteditProduct }) => {
 
   const handleUpdateCategory = async (data) => {
     const finalPayload = { ...data, ...payload };
+
     const formData = new FormData();
     for (let i of Object.entries(finalPayload)) formData.append(i[0], i[1]);
     if (finalPayload.image)
@@ -50,17 +51,22 @@ const UpdateCategorys = ({ editProduct, render, seteditProduct }) => {
       );
     if (finalPayload.brand) {
       // finalPayload.brand = finalPayload.brand.split(",").map((s) => s.trim());
-      const brandArray = finalPayload?.brand.split(",");
+      const brandArray = finalPayload?.brand?.split(",");
       for (let brand of brandArray) {
         formData.append("brand", brand);
       }
     }
+
+    console.log("finalPayload: ", finalPayload);
+    console.log("formData: ", formData);
+
     const response = await apiUpdateCategory(formData, editProduct._id);
-    if (response.success) {
-      toast.success(response.mes);
+
+    if (response?.success) {
+      toast.success(response?.mes);
       render();
       seteditProduct(null);
-    } else toast.error(response.mes);
+    } else toast.error(response?.mes);
   };
   return (
     <div className="w-full  flex flex-col gap-4 relative">

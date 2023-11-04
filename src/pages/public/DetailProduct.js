@@ -40,6 +40,7 @@ const DetailProduct = ({ isQuickView, data, location, dispatch, navigate }) => {
   const [relatedProducts, setRelatedProducts] = useState(null);
   const [update, setUpdate] = useState(false);
   const [varriant, setVarriant] = useState(null);
+  // console.log("varriant: ", varriant);
   const [skuSize, setSkuSize] = useState(null);
   const [pid, setPid] = useState(null);
   const [category, setCategory] = useState(null);
@@ -65,7 +66,6 @@ const DetailProduct = ({ isQuickView, data, location, dispatch, navigate }) => {
     if (response.success) {
       setProduct(response.productData);
       setCurrentImage(response.productData?.thumb);
-      setCurrentSize(response?.productData?.size);
     }
     console.log(response.productData);
   };
@@ -160,12 +160,12 @@ const DetailProduct = ({ isQuickView, data, location, dispatch, navigate }) => {
       });
     const response = await apiUpdateCart({
       pid: pid,
-      color: product?.color || currentProduct?.color,
-      size: product?.size[0] || currentProduct?.size[0],
+      color: currentProduct?.color || product?.color,
+      size: currentSize,
       quantity: quantity,
-      price: product?.price || currentProduct?.price,
-      thumbnail: product?.thumb || currentProduct?.thumb,
-      title: product?.title || currentProduct?.title,
+      price: currentProduct?.price || product?.price,
+      thumbnail: currentProduct?.thumb || product?.thumb,
+      title: currentProduct?.title || product?.title,
     });
     if (response.success) {
       toast.success(response.mes);
@@ -205,11 +205,11 @@ const DetailProduct = ({ isQuickView, data, location, dispatch, navigate }) => {
                   alt: "Wristwatch by Ted Baker London",
                   isFluidWidth: true,
                   // src: product?.thumb,
-                  src: currentProduct?.thumb || currentImage,
+                  src: currentImage || currentProduct?.thumb,
                 },
                 largeImage: {
                   // src: product?.thumb,
-                  src: currentProduct?.thumb || currentImage,
+                  src: currentImage || currentProduct?.thumb,
                   width: 1800,
                   height: 1500,
                 },
@@ -289,11 +289,11 @@ const DetailProduct = ({ isQuickView, data, location, dispatch, navigate }) => {
                   setSkuSize(null);
                 }}
                 className={clsx(
-                  "flex items-center gap-2 p-2 border cursor-pointer",
-                  !varriant && "border-main"
+                  "flex items-center gap-2 p-2 rounded-full cursor-pointer",
+                  !varriant && "shadow-[0_3px_10px_rgb(0,0,0,0.2)]"
                 )}
               >
-                <img
+                {/* <img
                   src={product?.thumb}
                   alt="thumb"
                   className="w-8 h-8 rounded-md object-cover"
@@ -303,7 +303,17 @@ const DetailProduct = ({ isQuickView, data, location, dispatch, navigate }) => {
                   <span className="text-sm">{`${formatMoney(
                     formatPrice(product?.price)
                   )} VND`}</span>
-                </span>
+                </span> */}
+                <span
+                  className={clsx(
+                    `w-7 h-7 rounded-full  `,
+                    product?.color.toLowerCase() === "white"
+                      ? `bg-slate-200`
+                      : product?.color.toLowerCase() === "black"
+                      ? `bg-${product?.color.toString().toLowerCase()}`
+                      : `bg-${product?.color.toString().toLowerCase()}-600`
+                  )}
+                ></span>
               </div>
               {product?.varriants?.map((el) => (
                 <div
@@ -313,21 +323,32 @@ const DetailProduct = ({ isQuickView, data, location, dispatch, navigate }) => {
                     setSkuSize(el.sku);
                   }}
                   className={clsx(
-                    "flex items-center gap-2 p-2 border cursor-pointer",
-                    varriant === el.sku && "border-main"
+                    "flex items-center gap-2 p-2 rounded-full cursor-pointer",
+                    varriant === el.sku && "shadow-[0_3px_10px_rgb(0,0,0,0.2)]"
                   )}
                 >
-                  <img
+                  {/* <img
                     src={el?.thumb}
                     alt="thumb"
                     className="w-8 h-8 rounded-md object-cover"
                   ></img>
                   <span className="flex flex-col">
                     <span>{el?.color}</span>
+
                     <span className="text-sm">{`${formatMoney(
                       formatPrice(el?.price)
                     )} VND`}</span>
-                  </span>
+                  </span> */}
+                  <span
+                    className={clsx(
+                      `w-7 h-7 rounded-full `,
+                      el?.color.toLowerCase() === "white"
+                        ? `bg-slate-800`
+                        : el?.color.toLowerCase() === "black"
+                        ? `bg-${el?.color.toString().toLowerCase()}`
+                        : `bg-${el?.color.toString().toLowerCase()}-600`
+                    )}
+                  ></span>
                 </div>
               ))}
             </div>
@@ -338,12 +359,13 @@ const DetailProduct = ({ isQuickView, data, location, dispatch, navigate }) => {
               {skuSize === null &&
                 product?.size?.map((el) => (
                   <div
-                    onClick={(e) => {
+                    onClick={() => {
                       setVarriant(null);
+                      setCurrentSize(el);
                     }}
                     className={clsx(
-                      "flex items-center gap-2 p-2 border cursor-pointer",
-                      !varriant && "border-main"
+                      "flex items-center gap-2 p-2 rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)] cursor-pointer",
+                      currentSize === el && "bg-main text-white"
                     )}
                   >
                     <span className="flex flex-col">
@@ -357,10 +379,13 @@ const DetailProduct = ({ isQuickView, data, location, dispatch, navigate }) => {
                     el?.size?.map((e) => (
                       <div
                         className={clsx(
-                          "flex items-center gap-2 p-2 border cursor-pointer",
-                          varriant === el.sku && "border-main"
+                          "flex items-center gap-2 p-2 rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)] cursor-pointer",
+                          e === currentSize && "bg-main text-white"
                         )}
-                        onClick={() => setVarriant(el.sku)}
+                        onClick={() => {
+                          setVarriant(el.sku);
+                          setCurrentSize(e);
+                        }}
                       >
                         <span className="flex flex-col">
                           <span>{e}</span>
