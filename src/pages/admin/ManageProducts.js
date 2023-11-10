@@ -165,7 +165,7 @@ const ManageProducts = () => {
                 <td className="text-center py-2">{el.quantity}</td>
                 <td className="text-center py-2">{el.sold}</td>
                 <td className="text-center py-2">{el.color}</td>
-                <td className="text-center py-2">{el.size}</td>
+                <td className="text-center py-2"> {el.size} </td>
                 <td className="text-center py-2">{el.totalRatings}</td>
                 <td className="text-center py-2">
                   {el.varriants?.length || 0}

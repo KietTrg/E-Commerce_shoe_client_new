@@ -289,31 +289,21 @@ const DetailProduct = ({ isQuickView, data, location, dispatch, navigate }) => {
                   setSkuSize(null);
                 }}
                 className={clsx(
-                  "flex items-center gap-2 p-2 rounded-full cursor-pointer",
+                  "flex items-center gap-2 p-2 rounded-lg cursor-pointer",
                   !varriant && "shadow-[0_3px_10px_rgb(0,0,0,0.2)]"
                 )}
               >
-                {/* <img
-                  src={product?.thumb}
-                  alt="thumb"
-                  className="w-8 h-8 rounded-md object-cover"
-                ></img>
-                <span className="flex flex-col">
-                  <span>{product?.color}</span>
-                  <span className="text-sm">{`${formatMoney(
-                    formatPrice(product?.price)
-                  )} VND`}</span>
-                </span> */}
-                <span
-                  className={clsx(
-                    `w-7 h-7 rounded-full  `,
-                    product?.color.toLowerCase() === "white"
-                      ? `bg-slate-200`
-                      : product?.color.toLowerCase() === "black"
-                      ? `bg-${product?.color.toString().toLowerCase()}`
-                      : `bg-${product?.color.toString().toLowerCase()}-600`
-                  )}
-                ></span>
+                <span className="flex flex-col gap-2 items-center">
+                  <span>
+                    {product?.color.charAt(0).toUpperCase()}
+                    {product?.color.slice(1)}
+                  </span>
+
+                  <div
+                    style={{ backgroundColor: product?.color.toLowerCase() }}
+                    className={clsx(`w-10 h-2 rounded-lg`)}
+                  ></div>
+                </span>
               </div>
               {product?.varriants?.map((el) => (
                 <div
@@ -323,32 +313,21 @@ const DetailProduct = ({ isQuickView, data, location, dispatch, navigate }) => {
                     setSkuSize(el.sku);
                   }}
                   className={clsx(
-                    "flex items-center gap-2 p-2 rounded-full cursor-pointer",
+                    "flex items-center gap-2 p-2  rounded-lg cursor-pointer",
                     varriant === el.sku && "shadow-[0_3px_10px_rgb(0,0,0,0.2)]"
                   )}
                 >
-                  {/* <img
-                    src={el?.thumb}
-                    alt="thumb"
-                    className="w-8 h-8 rounded-md object-cover"
-                  ></img>
-                  <span className="flex flex-col">
-                    <span>{el?.color}</span>
+                  <span className="flex flex-col gap-2 items-center">
+                    <span>
+                      {el?.color.charAt(0).toUpperCase()}
+                      {el?.color.slice(1)}
+                    </span>
 
-                    <span className="text-sm">{`${formatMoney(
-                      formatPrice(el?.price)
-                    )} VND`}</span>
-                  </span> */}
-                  <span
-                    className={clsx(
-                      `w-7 h-7 rounded-full `,
-                      el?.color.toLowerCase() === "white"
-                        ? `bg-slate-800`
-                        : el?.color.toLowerCase() === "black"
-                        ? `bg-${el?.color.toString().toLowerCase()}`
-                        : `bg-${el?.color.toString().toLowerCase()}-600`
-                    )}
-                  ></span>
+                    <div
+                      style={{ backgroundColor: el?.color.toLowerCase() }}
+                      className={clsx(`w-10 h-2 rounded-lg`)}
+                    ></div>
+                  </span>
                 </div>
               ))}
             </div>

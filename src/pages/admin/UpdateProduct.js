@@ -6,6 +6,7 @@ import { validate, getBase64 } from "ultils/helpers";
 import { toast } from "react-toastify";
 import { apiUpdateProduct } from "apis";
 import { showModal } from "store/app/appSlice";
+import { HashLoader } from "react-spinners";
 const UpdateProduct = ({ editProduct, render, seteditProduct }) => {
   const { categories } = useSelector((state) => state.app);
   const dispatch = useDispatch();
@@ -23,6 +24,8 @@ const UpdateProduct = ({ editProduct, render, seteditProduct }) => {
     thumb: null,
     images: [],
   });
+  const [isLoading, setIsLoading] = useState(false);
+
   useEffect(() => {
     reset({
       title: editProduct?.title || "",
@@ -114,9 +117,12 @@ const UpdateProduct = ({ editProduct, render, seteditProduct }) => {
         }
         console.log("finalPayload.size: ", sizeArray);
       }
-      dispatch(showModal({ isShowModal: true, modalChildren: <Loading /> }));
+      setIsLoading(true);
+      // dispatch(showModal({ isShowModal: true, modalChildren: <Loading /> }));
       const response = await apiUpdateProduct(formData, editProduct._id);
-      dispatch(showModal({ isShowModal: false, modalChildren: null }));
+      // dispatch(showModal({ isShowModal: false, modalChildren: null }));
+      setIsLoading(false);
+
       if (response.success) {
         toast.success(response.mes);
         render();
@@ -294,7 +300,12 @@ const UpdateProduct = ({ editProduct, render, seteditProduct }) => {
             </div>
           )}
           <div className="my-6">
-            <Button type="submit">Update Product</Button>
+            {!isLoading ? (
+              <Button type="submit">Update Product</Button>
+            ) : (
+              // <div className="w-7 h-7 border-4 border-gray-300 rounded-full border-t-transparent animate-spin"></div>
+              <HashLoader className=" z-500" color="#005f90"></HashLoader>
+            )}
           </div>
         </form>
       </div>

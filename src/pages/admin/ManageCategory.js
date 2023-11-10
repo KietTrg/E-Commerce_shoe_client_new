@@ -152,12 +152,12 @@ const ManageCategory = ({ navigate, location }) => {
                     >
                       <RiDeleteBin2Fill size={20}></RiDeleteBin2Fill>
                     </span>
-                    <span
+                    {/* <span
                       //   onClick={() => setCumtomizeVarriant(el)}
                       className="text-main hover:text-orange-600 cursor-pointer px-1"
                     >
                       <BiCustomize size={20}></BiCustomize>
-                    </span>
+                    </span> */}
                   </div>
                 </td>
               </tr>

@@ -2,6 +2,7 @@ import { apiCreateCategory, apiUpdateCategory } from "apis";
 import { Button, InputForm } from "components";
 import React, { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import { HashLoader } from "react-spinners";
 import { toast } from "react-toastify";
 import { getCategories } from "store/app/asyncActions";
 import { getBase64 } from "ultils/helpers";
@@ -15,6 +16,8 @@ const UpdateCategorys = ({ editProduct, render, seteditProduct }) => {
     watch,
   } = useForm();
   const [payload, setPayload] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+
   const [preview, setPreview] = useState({
     image: null,
   });
@@ -56,12 +59,9 @@ const UpdateCategorys = ({ editProduct, render, seteditProduct }) => {
         formData.append("brand", brand);
       }
     }
-
-    console.log("finalPayload: ", finalPayload);
-    console.log("formData: ", formData);
-
+    setIsLoading(true);
     const response = await apiUpdateCategory(formData, editProduct._id);
-
+    setIsLoading(false);
     if (response?.success) {
       toast.success(response?.mes);
       render();
@@ -130,7 +130,12 @@ const UpdateCategorys = ({ editProduct, render, seteditProduct }) => {
             </div>
           )}
           <div className="my-6">
-            <Button type="submit">Update Category</Button>
+            {!isLoading ? (
+              <Button type="submit">Update Category</Button>
+            ) : (
+              // <div className="w-7 h-7 border-4 border-gray-300 rounded-full border-t-transparent animate-spin"></div>
+              <HashLoader className=" z-500" color="#005f90"></HashLoader>
+            )}
           </div>
         </form>
       </div>

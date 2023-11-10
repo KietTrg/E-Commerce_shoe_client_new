@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { apiCreateProduct } from "apis";
 import { showModal } from "store/app/appSlice";
 import Swal from "sweetalert2";
+import { HashLoader } from "react-spinners";
 // import { RiDeleteBin2Fill } from "react-icons/ri";
 const CreateProducts = () => {
   const { categories } = useSelector((state) => state.app);
@@ -27,6 +28,8 @@ const CreateProducts = () => {
     images: [],
   });
   const [invalidFields, setInvalidFields] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+
   const changeValue = useCallback(
     (e) => {
       setPayload(e);
@@ -87,9 +90,11 @@ const CreateProducts = () => {
         console.log("finalPayload.size: ", sizeArray);
       }
       console.log("formData: ", formData);
-      dispatch(showModal({ isShowModal: true, modalChildren: <Loading /> }));
+      // dispatch(showModal({ isShowModal: true, modalChildren: <Loading /> }));
+      setIsLoading(true);
       const response = await apiCreateProduct(formData);
-      dispatch(showModal({ isShowModal: false, modalChildren: null }));
+      setIsLoading(false);
+      // dispatch(showModal({ isShowModal: false, modalChildren: null }));
 
       if (response.success) {
         toast.success(response.mes);
@@ -272,7 +277,12 @@ const CreateProducts = () => {
             </div>
           )}
           <div className="my-6">
-            <Button type="submit">Create New Product</Button>
+            {!isLoading ? (
+              <Button type="submit">Create New Product</Button>
+            ) : (
+              // <div className="w-7 h-7 border-4 border-gray-300 rounded-full border-t-transparent animate-spin"></div>
+              <HashLoader className=" z-500" color="#005f90"></HashLoader>
+            )}
           </div>
         </form>
       </div>
