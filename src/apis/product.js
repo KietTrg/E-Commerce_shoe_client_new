@@ -29,6 +29,18 @@ export const apiUpdateProduct = (data, pid) =>
     method: "put",
     data,
   });
+export const apiUpdateQuantityProduct = (quantity, pid) =>
+  axios({
+    url: "/product/quantity/" + pid,
+    method: "put",
+    data: { quantity },
+  });
+export const apiUpdateSoldProduct = (sold, pid) =>
+  axios({
+    url: "/product/sold/" + pid,
+    method: "put",
+    data: { sold },
+  });
 export const apiDeleteProduct = (pid) =>
   axios({
     url: "/product/" + pid,

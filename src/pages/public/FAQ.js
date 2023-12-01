@@ -54,7 +54,7 @@ const FAQ = () => {
           <div>
             <div className="flex justify-between items-center border-b-2">
               <h2 className="p-2 text-xl font-medium ">
-                Do you provide support?
+                How long will it take to get my order?
               </h2>
               <div
                 className=" cursor-pointer p-2"

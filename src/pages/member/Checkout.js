@@ -5,14 +5,51 @@ import { formatMoney } from "ultils/helpers";
 import { Congrat, InputForm, Paypal } from "components";
 import withBase from "hocs/withBase";
 import { getCurrent } from "store/user/asyncActions";
+import {
+  apiGetProducts,
+  apiUpdateQuantityProduct,
+  apiUpdateSoldProduct,
+} from "apis";
 const Checkout = ({ dispatch, navigate }) => {
   const { currentCart, current } = useSelector((state) => state.user);
+  console.log("currentCart: ", currentCart);
 
   const [isSuccess, setIsSuccess] = useState(false);
 
+  const updateQuatityProducts = async () => {
+    const arrayProductId = [];
+    for (const product of currentCart) {
+      arrayProductId.push({
+        id: product.product._id,
+        quantity: +product.quantity,
+      });
+    }
+    arrayProductId.forEach(async (e) => {
+      await apiUpdateQuantityProduct(e.quantity, e.id);
+    });
+  };
+  const updateSoldProducts = async () => {
+    const arrayProductId = [];
+    for (const product of currentCart) {
+      arrayProductId.push({
+        id: product.product._id,
+        sold: +product.quantity,
+      });
+    }
+    arrayProductId.forEach(async (e) => {
+      await apiUpdateSoldProduct(e.sold, e.id);
+      console.log("product._id: ", e.sold);
+      console.log("product.quantity: ", e.id);
+    });
+  };
   useEffect(() => {
-    if (isSuccess) dispatch(getCurrent());
+    if (isSuccess) {
+      updateQuatityProducts();
+      updateSoldProducts();
+      dispatch(getCurrent());
+    }
   }, [isSuccess]);
+
   return (
     <div className="w-full p-8 grid grid-cols-10 h-full max-h-screen overflow-y-auto gap-6">
       {isSuccess && <Congrat></Congrat>}
