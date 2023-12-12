@@ -29,7 +29,7 @@ const TopHeader = () => {
   }, [mes]);
   return (
     <div className="h-[38px] w-full bg-main flex items-center justify-center">
-      <div className="w-main flex items-center justify-between text-xs text-white">
+      <div className=" h-[38px] w-main flex items-center justify-between text-xs text-white">
         <span>
           ORDER ONLINE OR CALL US{" "}
           <a href="tel: +842923831301">: +84 292 3831 301</a>

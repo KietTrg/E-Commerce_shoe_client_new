@@ -289,8 +289,8 @@ const DetailProduct = ({ isQuickView, data, location, dispatch, navigate }) => {
                   setSkuSize(null);
                 }}
                 className={clsx(
-                  "flex items-center gap-2 p-2 rounded-lg cursor-pointer",
-                  !varriant && "shadow-[0_3px_10px_rgb(0,0,0,0.2)]"
+                  "flex items-center gap-2 p-2  rounded-lg cursor-pointer",
+                  !varriant && "bg-[#bde0fe] shadow-[0_3px_10px_rgb(0,0,0,0.2)]"
                 )}
               >
                 <span className="flex flex-col gap-2 items-center">
@@ -314,7 +314,8 @@ const DetailProduct = ({ isQuickView, data, location, dispatch, navigate }) => {
                   }}
                   className={clsx(
                     "flex items-center gap-2 p-2  rounded-lg cursor-pointer",
-                    varriant === el.sku && "shadow-[0_3px_10px_rgb(0,0,0,0.2)]"
+                    varriant === el.sku &&
+                      "bg-[#bde0fe] shadow-[0_3px_10px_rgb(0,0,0,0.2)]"
                   )}
                 >
                   <span className="flex flex-col gap-2 items-center">
@@ -344,7 +345,7 @@ const DetailProduct = ({ isQuickView, data, location, dispatch, navigate }) => {
                     }}
                     className={clsx(
                       "flex items-center gap-2 p-2 rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)] cursor-pointer",
-                      currentSize === el && "bg-main text-white"
+                      currentSize === el && "bg-[#bde0fe] "
                     )}
                   >
                     <span className="flex flex-col">
@@ -359,7 +360,7 @@ const DetailProduct = ({ isQuickView, data, location, dispatch, navigate }) => {
                       <div
                         className={clsx(
                           "flex items-center gap-2 p-2 rounded-lg shadow-[0_3px_10px_rgb(0,0,0,0.2)] cursor-pointer",
-                          e === currentSize && "bg-main text-white"
+                          e === currentSize && "bg-main "
                         )}
                         onClick={() => {
                           setVarriant(el.sku);

@@ -144,7 +144,7 @@ const Product = ({
                   icons={
                     <BsSuitHeartFill
                       color={
-                        current.wishlist.some((el) => el._id === pid)
+                        current?.wishlist.some((el) => el._id === pid)
                           ? "pink"
                           : "black"
                       }
